@@ -13,6 +13,40 @@ const PRAYER_TIMES = [
   { name: "Isha", time: "19:45" },
 ];
 
+// Ramadan 2026 Calendar Data (approximate dates: Feb 17 - Mar 18, 2026)
+const RAMADAN_2026_CALENDAR = [
+  { day: 1, date: "17 Feb", sehri: "05:42", iftar: "18:02" },
+  { day: 2, date: "18 Feb", sehri: "05:41", iftar: "18:03" },
+  { day: 3, date: "19 Feb", sehri: "05:40", iftar: "18:04" },
+  { day: 4, date: "20 Feb", sehri: "05:39", iftar: "18:05" },
+  { day: 5, date: "21 Feb", sehri: "05:38", iftar: "18:06" },
+  { day: 6, date: "22 Feb", sehri: "05:37", iftar: "18:07" },
+  { day: 7, date: "23 Feb", sehri: "05:36", iftar: "18:08" },
+  { day: 8, date: "24 Feb", sehri: "05:35", iftar: "18:09" },
+  { day: 9, date: "25 Feb", sehri: "05:34", iftar: "18:10" },
+  { day: 10, date: "26 Feb", sehri: "05:33", iftar: "18:11" },
+  { day: 11, date: "27 Feb", sehri: "05:32", iftar: "18:12" },
+  { day: 12, date: "28 Feb", sehri: "05:31", iftar: "18:13" },
+  { day: 13, date: "1 Mar", sehri: "05:29", iftar: "18:14" },
+  { day: 14, date: "2 Mar", sehri: "05:28", iftar: "18:15" },
+  { day: 15, date: "3 Mar", sehri: "05:27", iftar: "18:16" },
+  { day: 16, date: "4 Mar", sehri: "05:25", iftar: "18:17" },
+  { day: 17, date: "5 Mar", sehri: "05:24", iftar: "18:18" },
+  { day: 18, date: "6 Mar", sehri: "05:22", iftar: "18:19" },
+  { day: 19, date: "7 Mar", sehri: "05:21", iftar: "18:20" },
+  { day: 20, date: "8 Mar", sehri: "05:19", iftar: "18:21" },
+  { day: 21, date: "9 Mar", sehri: "05:18", iftar: "18:22" },
+  { day: 22, date: "10 Mar", sehri: "05:16", iftar: "18:23" },
+  { day: 23, date: "11 Mar", sehri: "05:15", iftar: "18:24" },
+  { day: 24, date: "12 Mar", sehri: "05:13", iftar: "18:25" },
+  { day: 25, date: "13 Mar", sehri: "05:11", iftar: "18:26" },
+  { day: 26, date: "14 Mar", sehri: "05:10", iftar: "18:27" },
+  { day: 27, date: "15 Mar", sehri: "05:08", iftar: "18:28" },
+  { day: 28, date: "16 Mar", sehri: "05:06", iftar: "18:29" },
+  { day: 29, date: "17 Mar", sehri: "05:05", iftar: "18:30" },
+  { day: 30, date: "18 Mar", sehri: "05:03", iftar: "18:31" },
+];
+
 const getCurrentPrayer = () => {
   const now = new Date();
   const currentTime = now.getHours() * 60 + now.getMinutes();
@@ -43,7 +77,7 @@ const Home = () => {
     const timer = setInterval(() => {
       setCurrentTime(new Date());
       setPrayerInfo(getCurrentPrayer());
-    }, 60000); // Update every minute
+    }, 60000);
 
     return () => clearInterval(timer);
   }, []);
@@ -58,99 +92,134 @@ const Home = () => {
   return (
     <AppLayout>
       <div className="animate-fade-in">
-        {/* Mosque Banner Image */}
-        <div className="relative w-full h-40 overflow-hidden">
+        {/* Mosque Banner Image - Larger with object-top positioning */}
+        <div className="relative w-full h-48 overflow-hidden">
           <img 
             src={mosqueBanner} 
             alt="Mosque Banner" 
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-top"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/30 to-transparent" />
         </div>
 
-        <div className="px-4 -mt-8 relative z-10">
-          {/* Prayer Time Card */}
+        <div className="px-4 -mt-6 relative z-10">
+          {/* Prayer Time Card - Smaller & Compact */}
           <div 
-            className="rounded-2xl p-5 mb-6 shadow-lg"
+            className="rounded-xl px-4 py-3 mb-5 shadow-lg"
             style={{
               background: "linear-gradient(135deg, #145C43 0%, #1E7F5C 50%, #28A070 100%)"
             }}
           >
             <div className="flex items-center justify-between">
-              <div className="text-white">
-                <p className="text-white/70 text-sm mb-1">Next Prayer</p>
-                <h2 className="text-3xl font-bold font-display">{prayerInfo.next.name}</h2>
+              <div className="text-white flex-1">
+                <p className="text-white/60 text-[10px] uppercase tracking-wide">Next Prayer</p>
+                <h2 className="text-xl font-bold font-display">{prayerInfo.next.name}</h2>
               </div>
-              <div className="text-right text-white">
-                <p className="text-white/70 text-sm mb-1">Pakistan Standard Time</p>
-                <p className="text-3xl font-bold font-display">{formatTime(prayerInfo.next.time)}</p>
+              
+              {/* Vertical Divider */}
+              <div className="w-px h-10 bg-white/30 mx-4" />
+              
+              <div className="text-right text-white flex-1">
+                <p className="text-white/60 text-[10px] uppercase tracking-wide">Pakistan Time</p>
+                <p className="text-xl font-bold font-display">{formatTime(prayerInfo.next.time)}</p>
               </div>
-            </div>
-            
-            <div className="mt-4 pt-4 border-t border-white/20">
-              <Link to="/attendance" className="flex items-center justify-between text-white hover:text-white/90 transition-colors">
-                <span className="font-medium">Track Your Daily Progress</span>
-                <ChevronRight className="w-5 h-5" />
-              </Link>
             </div>
           </div>
 
           {/* Welcome Text */}
-          <div className="text-center mb-6">
-            <h1 className="text-xl font-display font-bold text-foreground mb-2">
+          <div className="text-center mb-5">
+            <h1 className="text-lg font-display font-bold text-foreground mb-1">
               Welcome to RamzanOne
             </h1>
-            <p className="text-muted-foreground text-sm">
+            <p className="text-muted-foreground text-xs">
               Your spiritual companion for the blessed month
             </p>
           </div>
 
           {/* Action Cards */}
-          <div className="space-y-4 pb-6">
+          <div className="space-y-3 mb-5">
             {/* Mark Attendance - Large Card */}
             <Link to="/attendance" className="group block">
               <div 
-                className="rounded-2xl p-6 shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                className="rounded-xl p-4 shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
                 style={{
                   background: "linear-gradient(135deg, #145C43 0%, #1E7F5C 50%, #28A070 100%)"
                 }}
               >
-                <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-full bg-white/20 flex items-center justify-center">
-                    <CheckCircle2 className="w-7 h-7 text-white" />
+                <div className="flex items-center gap-3">
+                  <div className="w-11 h-11 rounded-full bg-white/20 flex items-center justify-center">
+                    <CheckCircle2 className="w-5 h-5 text-white" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-white">
+                    <h3 className="text-base font-semibold text-white">
                       Mark Attendance
                     </h3>
-                    <p className="text-sm text-white/70 mt-1">
+                    <p className="text-xs text-white/70">
                       Track your daily prayers, Dua & Quran
                     </p>
                   </div>
-                  <ChevronRight className="w-6 h-6 text-white/70" />
+                  <ChevronRight className="w-5 h-5 text-white/70" />
                 </div>
               </div>
             </Link>
 
             {/* Contact Us - Smaller Card */}
             <Link to="/contact" className="group block">
-              <div className="bg-card rounded-2xl p-4 prayer-card-shadow transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] border border-border">
+              <div className="bg-card rounded-xl p-3 prayer-card-shadow transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] border border-border">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Phone className="w-5 h-5 text-primary" />
+                  <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Phone className="w-4 h-4 text-primary" />
                   </div>
                   <div className="flex-1">
                     <h3 className="text-sm font-semibold text-foreground">
                       Contact Us
                     </h3>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-[11px] text-muted-foreground">
                       Get support via WhatsApp
                     </p>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-muted-foreground" />
+                  <ChevronRight className="w-4 h-4 text-muted-foreground" />
                 </div>
               </div>
             </Link>
+          </div>
+
+          {/* Ramadan 2026 Calendar */}
+          <div 
+            className="rounded-xl p-4 mb-6 shadow-lg"
+            style={{
+              background: "linear-gradient(135deg, #145C43 0%, #1E7F5C 50%, #28A070 100%)"
+            }}
+          >
+            <h3 className="text-white font-display font-bold text-base mb-3 text-center">
+              Ramadan 2026 Calendar
+            </h3>
+            <p className="text-white/60 text-[10px] text-center mb-3 uppercase tracking-wide">
+              Islamabad, Pakistan Timings
+            </p>
+            
+            {/* Calendar Header */}
+            <div className="grid grid-cols-4 gap-2 mb-2 text-[10px] font-semibold text-white/80 uppercase tracking-wide">
+              <div className="text-center">Day</div>
+              <div className="text-center">Date</div>
+              <div className="text-center">Sehri</div>
+              <div className="text-center">Iftar</div>
+            </div>
+            
+            {/* Calendar Rows - Scrollable */}
+            <div className="max-h-48 overflow-y-auto space-y-1 pr-1 custom-scrollbar">
+              {RAMADAN_2026_CALENDAR.map((day) => (
+                <div 
+                  key={day.day} 
+                  className="grid grid-cols-4 gap-2 py-2 px-1 rounded-lg bg-white/10 text-white text-xs"
+                >
+                  <div className="text-center font-bold">{day.day}</div>
+                  <div className="text-center text-white/80">{day.date}</div>
+                  <div className="text-center font-medium">{day.sehri}</div>
+                  <div className="text-center font-medium">{day.iftar}</div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
