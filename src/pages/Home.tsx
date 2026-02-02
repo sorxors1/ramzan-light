@@ -138,117 +138,93 @@ const Home = () => {
 
           {/* Action Cards Grid - 6 cards in 2x3 layout */}
           <div className="grid grid-cols-2 gap-3 mb-5">
-            {/* Mark Attendance */}
+            {/* Namaz Attendance */}
             <Link to="/attendance" className="group block">
               <div 
-                className="rounded-xl p-4 shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] h-24 flex flex-col justify-center"
+                className="rounded-xl p-4 shadow-md transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] h-24 flex flex-col items-center justify-center"
                 style={{
-                  background: "linear-gradient(135deg, #1E7F5C 0%, #28A070 50%, #4ADE80 100%)"
+                  background: "linear-gradient(135deg, #2D5A4A 0%, #3D7A62 50%, #4A8B72 100%)"
                 }}
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-                    <Scroll className="w-5 h-5 text-white" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-sm font-semibold text-white">Mark Attendance</h3>
-                  </div>
+                <div className="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center mb-2">
+                  <Scroll className="w-5 h-5 text-white" />
                 </div>
+                <h3 className="text-xs font-semibold text-white text-center">Namaz Attendance</h3>
               </div>
             </Link>
 
             {/* Kaza Namaz */}
             <Link to="/kaza" className="group block">
               <div 
-                className="rounded-xl p-4 shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] h-24 flex flex-col justify-center"
+                className="rounded-xl p-4 shadow-md transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] h-24 flex flex-col items-center justify-center"
                 style={{
-                  background: "linear-gradient(135deg, #6366F1 0%, #818CF8 50%, #A5B4FC 100%)"
+                  background: "linear-gradient(135deg, #4A5568 0%, #5A6A7A 50%, #6B7B8C 100%)"
                 }}
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-                    <BookOpen className="w-5 h-5 text-white" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-sm font-semibold text-white">Kaza Namaz</h3>
-                  </div>
+                <div className="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center mb-2">
+                  <BookOpen className="w-5 h-5 text-white" />
                 </div>
+                <h3 className="text-xs font-semibold text-white text-center">Kaza Namaz</h3>
               </div>
             </Link>
 
             {/* Reports */}
             <Link to="/reports" className="group block">
               <div 
-                className="rounded-xl p-4 shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] h-24 flex flex-col justify-center"
+                className="rounded-xl p-4 shadow-md transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] h-24 flex flex-col items-center justify-center"
                 style={{
-                  background: "linear-gradient(135deg, #F59E0B 0%, #FBBF24 50%, #FCD34D 100%)"
+                  background: "linear-gradient(135deg, #8B7355 0%, #9D8468 50%, #AB947A 100%)"
                 }}
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-                    <ChartColumnBig className="w-5 h-5 text-white" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-sm font-semibold text-white">Reports</h3>
-                  </div>
+                <div className="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center mb-2">
+                  <ChartColumnBig className="w-5 h-5 text-white" />
                 </div>
+                <h3 className="text-xs font-semibold text-white text-center">Reports</h3>
               </div>
             </Link>
 
             {/* About Us */}
             <Link to="/about" className="group block">
               <div 
-                className="rounded-xl p-4 shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] h-24 flex flex-col justify-center"
+                className="rounded-xl p-4 shadow-md transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] h-24 flex flex-col items-center justify-center"
                 style={{
-                  background: "linear-gradient(135deg, #EC4899 0%, #F472B6 50%, #F9A8D4 100%)"
+                  background: "linear-gradient(135deg, #6B5B7A 0%, #7D6C8C 50%, #8E7D9C 100%)"
                 }}
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-                    <InfoIcon className="w-5 h-5 text-white" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-sm font-semibold text-white">About Us</h3>
-                  </div>
+                <div className="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center mb-2">
+                  <InfoIcon className="w-5 h-5 text-white" />
                 </div>
+                <h3 className="text-xs font-semibold text-white text-center">About Us</h3>
               </div>
             </Link>
 
             {/* Contact Us */}
             <Link to="/contact" className="group block">
               <div 
-                className="rounded-xl p-4 shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] h-24 flex flex-col justify-center"
+                className="rounded-xl p-4 shadow-md transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] h-24 flex flex-col items-center justify-center"
                 style={{
-                  background: "linear-gradient(135deg, #14B8A6 0%, #2DD4BF 50%, #5EEAD4 100%)"
+                  background: "linear-gradient(135deg, #3D6B6B 0%, #4D7B7B 50%, #5D8B8B 100%)"
                 }}
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-                    <Phone className="w-5 h-5 text-white" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-sm font-semibold text-white">Contact Us</h3>
-                  </div>
+                <div className="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center mb-2">
+                  <Phone className="w-5 h-5 text-white" />
                 </div>
+                <h3 className="text-xs font-semibold text-white text-center">Contact Us</h3>
               </div>
             </Link>
 
             {/* Profile Settings */}
             <Link to="/profile" className="group block">
               <div 
-                className="rounded-xl p-4 shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] h-24 flex flex-col justify-center"
+                className="rounded-xl p-4 shadow-md transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] h-24 flex flex-col items-center justify-center"
                 style={{
-                  background: "linear-gradient(135deg, #8B5CF6 0%, #A78BFA 50%, #C4B5FD 100%)"
+                  background: "linear-gradient(135deg, #5A5A6B 0%, #6A6A7B 50%, #7A7A8B 100%)"
                 }}
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-                    <Settings className="w-5 h-5 text-white" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-sm font-semibold text-white">Profile Settings</h3>
-                  </div>
+                <div className="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center mb-2">
+                  <Settings className="w-5 h-5 text-white" />
                 </div>
+                <h3 className="text-xs font-semibold text-white text-center">Profile Settings</h3>
               </div>
             </Link>
           </div>
