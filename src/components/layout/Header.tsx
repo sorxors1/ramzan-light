@@ -18,7 +18,7 @@ const Header = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-primary shadow-md">
+    <header className="sticky top-0 z-50 w-full bg-primary shadow-md rounded-b-2xl">
       <div className="flex h-16 items-center justify-between px-4">
         {/* Hamburger Menu */}
         <Sheet open={open} onOpenChange={setOpen}>
@@ -49,8 +49,8 @@ const Header = () => {
         </Sheet>
 
         {/* Center Logo */}
-        <Link to="/" className="flex items-center">
-          <img src={headerLogo} alt="RamzanOne" className="h-8 object-contain" />
+        <Link to="/home" className="flex items-center">
+          <img src={headerLogo} alt="RamzanOne" className="h-10 object-contain" />
         </Link>
 
         {/* Profile Icon */}
