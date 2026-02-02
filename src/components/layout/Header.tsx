@@ -18,7 +18,12 @@ const Header = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-primary shadow-md rounded-b-2xl">
+    <header 
+      className="sticky top-0 z-50 w-full shadow-md rounded-b-2xl"
+      style={{
+        background: "linear-gradient(135deg, #145C43 0%, #1E7F5C 50%, #28A070 100%)"
+      }}
+    >
       <div className="flex h-16 items-center justify-between px-4">
         {/* Hamburger Menu */}
         <Sheet open={open} onOpenChange={setOpen}>
