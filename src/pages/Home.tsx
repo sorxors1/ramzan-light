@@ -1,6 +1,6 @@
 import AppLayout from "@/components/layout/AppLayout";
 import { Link } from "react-router-dom";
-import { CheckCircle2, Phone, ChevronRight } from "lucide-react";
+import { Phone, ChevronRight, Scroll } from "lucide-react";
 import { useEffect, useState } from "react";
 import mosqueBanner from "@/assets/mosque-banner.png";
 
@@ -128,10 +128,10 @@ const Home = () => {
 
           {/* Welcome Text */}
           <div className="text-center mb-5">
-            <h1 className="text-lg font-display font-bold text-foreground mb-1">
+            <h1 className="text-2xl font-arabic font-bold text-foreground mb-1">
               Welcome to RamzanOne
             </h1>
-            <p className="text-muted-foreground text-xs">
+            <p className="text-muted-foreground text-sm">
               Your spiritual companion for the blessed month
             </p>
           </div>
@@ -143,12 +143,12 @@ const Home = () => {
               <div 
                 className="rounded-xl p-4 shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
                 style={{
-                  background: "linear-gradient(135deg, #145C43 0%, #1E7F5C 50%, #28A070 100%)"
+                  background: "linear-gradient(135deg, #F5D76E 0%, #D4A017 50%, #C4961A 100%)"
                 }}
               >
                 <div className="flex items-center gap-3">
                   <div className="w-11 h-11 rounded-full bg-white/20 flex items-center justify-center">
-                    <CheckCircle2 className="w-5 h-5 text-white" />
+                    <Scroll className="w-5 h-5 text-white" />
                   </div>
                   <div className="flex-1">
                     <h3 className="text-base font-semibold text-white">

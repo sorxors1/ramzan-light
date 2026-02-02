@@ -16,6 +16,7 @@ export default {
       fontFamily: {
         sans: ["Inter", "system-ui", "sans-serif"],
         display: ["Poppins", "system-ui", "sans-serif"],
+        arabic: ["Amiri", "serif"],
       },
       colors: {
         border: "hsl(var(--border))",
