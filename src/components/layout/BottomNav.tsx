@@ -1,5 +1,6 @@
-import { Home, BookOpen, BarChart3, Info, Phone } from "lucide-react";
+import { BookOpen, BarChart3, Info, Phone } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import homeIcon from "@/assets/home-icon.png";
 
 const BottomNav = () => {
   const location = useLocation();
@@ -7,16 +8,16 @@ const BottomNav = () => {
   const navItems = [
     { icon: BookOpen, label: "Kaza", path: "/kaza" },
     { icon: BarChart3, label: "Reports", path: "/reports" },
-    { icon: Home, label: "Home", path: "/", isCenter: true },
+    { label: "Home", path: "/home", isCenter: true },
     { icon: Info, label: "About", path: "/about" },
     { icon: Phone, label: "Contact", path: "/contact" },
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-primary shadow-[0_-4px_20px_rgba(0,0,0,0.1)]">
-      <div className="flex items-center justify-around h-16 px-2">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-primary shadow-[0_-4px_20px_rgba(0,0,0,0.1)] rounded-t-3xl">
+      <div className="flex items-center justify-around h-18 px-2 py-2">
         {navItems.map((item) => {
-          const isActive = location.pathname === item.path;
+          const isActive = location.pathname === item.path || (item.path === "/home" && location.pathname === "/");
           const Icon = item.icon;
           
           return (
@@ -28,19 +29,21 @@ const BottomNav = () => {
               }`}
             >
               {item.isCenter ? (
-                <div className={`flex flex-col items-center justify-center -mt-6 w-16 h-16 rounded-full bg-secondary shadow-lg transition-transform ${
-                  isActive ? "scale-110" : "hover:scale-105"
-                }`}>
-                  <Icon className="h-6 w-6 text-secondary-foreground" />
-                  <span className="text-[10px] font-medium text-secondary-foreground mt-0.5">
-                    {item.label}
-                  </span>
+                <div 
+                  className={`flex items-center justify-center -mt-8 w-16 h-16 rounded-full shadow-xl transition-transform border-4 border-background ${
+                    isActive ? "scale-110" : "hover:scale-105"
+                  }`}
+                  style={{
+                    background: "linear-gradient(135deg, #F5D76E 0%, #D4A017 50%, #C4961A 100%)"
+                  }}
+                >
+                  <img src={homeIcon} alt="Home" className="w-10 h-10 object-contain" />
                 </div>
               ) : (
-                <div className={`flex flex-col items-center transition-colors ${
-                  isActive ? "text-secondary-foreground" : "text-primary-foreground/70"
+                <div className={`flex flex-col items-center transition-colors rounded-xl px-3 py-2 ${
+                  isActive ? "text-primary-foreground bg-primary-foreground/10" : "text-primary-foreground/70"
                 }`}>
-                  <Icon className={`h-5 w-5 ${isActive ? "scale-110" : ""} transition-transform`} />
+                  {Icon && <Icon className={`h-5 w-5 ${isActive ? "scale-110" : ""} transition-transform`} />}
                   <span className="text-[10px] font-medium mt-1">{item.label}</span>
                 </div>
               )}

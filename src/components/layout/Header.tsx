@@ -1,6 +1,7 @@
 import { Menu, User } from "lucide-react";
 import { Link } from "react-router-dom";
 import logo from "@/assets/logo.png";
+import headerLogo from "@/assets/header-logo.png";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useState } from "react";
 
@@ -49,7 +50,7 @@ const Header = () => {
 
         {/* Center Logo */}
         <Link to="/" className="flex items-center">
-          <img src={logo} alt="RamzanOne" className="h-10 object-contain" />
+          <img src={headerLogo} alt="RamzanOne" className="h-8 object-contain" />
         </Link>
 
         {/* Profile Icon */}
