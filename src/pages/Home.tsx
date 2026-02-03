@@ -94,7 +94,7 @@ const Home = () => {
     <div className="min-h-screen flex justify-center bg-muted">
       <div className="w-full max-w-md min-h-screen flex flex-col bg-background shadow-xl relative">
         {/* Banner Image - Behind Header */}
-        <div className="absolute top-0 left-0 right-0 h-80 overflow-hidden z-0">
+        <div className="absolute top-0 left-0 right-0 h-64 overflow-hidden z-0">
           <img 
             src={kaabaBanner} 
             alt="Kaaba Banner" 
@@ -111,7 +111,7 @@ const Home = () => {
         <main className="flex-1 pb-20 relative z-10">
           <div className="animate-fade-in">
             {/* Spacer for banner */}
-            <div className="h-52" />
+            <div className="h-40" />
 
             <div className="px-4 relative z-10">
               {/* Prayer Time Card */}
