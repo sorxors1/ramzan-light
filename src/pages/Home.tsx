@@ -100,8 +100,8 @@ const Home = () => {
             alt="Kaaba Banner" 
             className="w-full h-full object-cover object-center"
           />
-          {/* Fade effect at bottom */}
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
+          {/* Fade effect at bottom only */}
+          <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background to-transparent" />
         </div>
 
         {/* Header - On top of banner */}
@@ -138,9 +138,9 @@ const Home = () => {
 
               {/* Welcome Text */}
               <div className="text-center mb-5">
-                <h1 className="text-2xl font-arabic font-bold text-foreground mb-1">
-                  Welcome to KYC Prayer Log
-                </h1>
+              <h1 className="text-2xl font-arabic font-bold text-foreground mb-1">
+                Welcome to KYF Prayer Log
+              </h1>
                 <p className="text-muted-foreground text-sm">
                   Your spiritual companion for the blessed month
                 </p>
@@ -156,8 +156,8 @@ const Home = () => {
                       background: "linear-gradient(135deg, #1E7F5C 0%, #28A070 50%, #4ADE80 100%)"
                     }}
                   >
-                    <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center mb-2">
-                      <Scroll className="w-5 h-5 text-white" />
+                    <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-2 shadow-sm">
+                      <Scroll className="w-5 h-5 text-emerald-600" />
                     </div>
                     <h3 className="text-xs font-semibold text-white text-center">Namaz Attendance</h3>
                   </div>
@@ -171,8 +171,8 @@ const Home = () => {
                       background: "linear-gradient(135deg, #6366F1 0%, #818CF8 50%, #A5B4FC 100%)"
                     }}
                   >
-                    <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center mb-2">
-                      <BookOpen className="w-5 h-5 text-white" />
+                    <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-2 shadow-sm">
+                      <BookOpen className="w-5 h-5 text-indigo-600" />
                     </div>
                     <h3 className="text-xs font-semibold text-white text-center">Kaza Namaz</h3>
                   </div>
@@ -186,8 +186,8 @@ const Home = () => {
                       background: "linear-gradient(135deg, #F59E0B 0%, #FBBF24 50%, #FCD34D 100%)"
                     }}
                   >
-                    <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center mb-2">
-                      <ChartColumnBig className="w-5 h-5 text-white" />
+                    <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-2 shadow-sm">
+                      <ChartColumnBig className="w-5 h-5 text-amber-600" />
                     </div>
                     <h3 className="text-xs font-semibold text-white text-center">Reports</h3>
                   </div>
@@ -201,8 +201,8 @@ const Home = () => {
                       background: "linear-gradient(135deg, #EC4899 0%, #F472B6 50%, #F9A8D4 100%)"
                     }}
                   >
-                    <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center mb-2">
-                      <InfoIcon className="w-5 h-5 text-white" />
+                    <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-2 shadow-sm">
+                      <InfoIcon className="w-5 h-5 text-pink-600" />
                     </div>
                     <h3 className="text-xs font-semibold text-white text-center">About Us</h3>
                   </div>
@@ -216,8 +216,8 @@ const Home = () => {
                       background: "linear-gradient(135deg, #14B8A6 0%, #2DD4BF 50%, #5EEAD4 100%)"
                     }}
                   >
-                    <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center mb-2">
-                      <Phone className="w-5 h-5 text-white" />
+                    <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-2 shadow-sm">
+                      <Phone className="w-5 h-5 text-teal-600" />
                     </div>
                     <h3 className="text-xs font-semibold text-white text-center">Contact Us</h3>
                   </div>
@@ -231,8 +231,8 @@ const Home = () => {
                       background: "linear-gradient(135deg, #8B5CF6 0%, #A78BFA 50%, #C4B5FD 100%)"
                     }}
                   >
-                    <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center mb-2">
-                      <Settings className="w-5 h-5 text-white" />
+                    <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-2 shadow-sm">
+                      <Settings className="w-5 h-5 text-violet-600" />
                     </div>
                     <h3 className="text-xs font-semibold text-white text-center">Profile Settings</h3>
                   </div>
