@@ -3,21 +3,37 @@ import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import { useAuth } from "@/hooks/useAuth";
 import logo from "@/assets/logo.png";
 
 const SignIn = () => {
   const navigate = useNavigate();
+  const { signIn } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSignIn = (e: React.FormEvent) => {
+  const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
       toast.error("Please fill in all fields");
       return;
     }
-    toast.success("Welcome back!");
-    navigate("/home");
+
+    setLoading(true);
+    try {
+      const { error } = await signIn(email, password);
+      if (error) {
+        toast.error(error.message);
+      } else {
+        toast.success("Welcome back!");
+        navigate("/home");
+      }
+    } catch (error) {
+      toast.error("An error occurred");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -29,20 +45,23 @@ const SignIn = () => {
       />
       
       <div className="w-full max-w-sm">
-        <h1 className="text-2xl font-display font-bold text-center text-foreground mb-8">
+        <h1 className="text-2xl font-display font-bold text-center text-foreground mb-2">
           Welcome Back
         </h1>
+        <p className="text-center text-muted-foreground font-urdu mb-8">
+          خوش آمدید
+        </p>
         
         <form onSubmit={handleSignIn} className="space-y-4">
           <div className="space-y-2">
             <label className="text-sm font-medium text-foreground">
-              Phone / Email
+              Email
             </label>
             <Input
-              type="text"
+              type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your phone or email"
+              placeholder="Enter your email"
               className="h-12 rounded-xl bg-card border-border"
             />
           </div>
@@ -62,9 +81,10 @@ const SignIn = () => {
           
           <Button 
             type="submit"
+            disabled={loading}
             className="w-full h-12 text-base font-semibold rounded-xl bg-secondary hover:bg-secondary/90 btn-shadow mt-6"
           >
-            Sign In
+            {loading ? "Signing In..." : "Sign In"}
           </Button>
         </form>
         
