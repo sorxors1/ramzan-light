@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { Phone, Scroll, BookOpen, ChartColumnBig, InfoIcon, Settings } from "lucide-react";
 import { useEffect, useState } from "react";
-import kaabaBanner from "@/assets/kaaba-banner.jpeg";
+import kaabaBannerGif from "@/assets/kaaba-banner.gif";
+import kaabaBannerFallback from "@/assets/kaaba-banner-fallback.png";
 import Header from "@/components/layout/Header";
 import BottomNav from "@/components/layout/BottomNav";
 
@@ -73,6 +74,8 @@ const getCurrentPrayer = () => {
 const Home = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [prayerInfo, setPrayerInfo] = useState(getCurrentPrayer());
+  const [bannerLoading, setBannerLoading] = useState(true);
+  const [bannerError, setBannerError] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -95,10 +98,23 @@ const Home = () => {
       <div className="w-full max-w-md min-h-screen flex flex-col bg-background shadow-xl relative">
         {/* Banner Image - Behind Header */}
         <div className="absolute top-0 left-0 right-0 h-72 overflow-hidden z-0">
+          {/* Loading spinner */}
+          {bannerLoading && !bannerError && (
+            <div className="absolute inset-0 flex items-center justify-center bg-muted">
+              <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+            </div>
+          )}
+          
+          {/* GIF Banner (main) or Fallback PNG (only on error) */}
           <img 
-            src={kaabaBanner} 
+            src={bannerError ? kaabaBannerFallback : kaabaBannerGif} 
             alt="Kaaba Banner" 
-            className="w-full h-full object-cover object-center"
+            className={`w-full h-full object-cover object-center transition-opacity duration-300 ${bannerLoading && !bannerError ? 'opacity-0' : 'opacity-100'}`}
+            onLoad={() => setBannerLoading(false)}
+            onError={() => {
+              setBannerError(true);
+              setBannerLoading(false);
+            }}
           />
           {/* Fade effect at bottom only */}
           <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-background to-transparent" />
