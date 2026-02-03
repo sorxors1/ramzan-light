@@ -48,7 +48,7 @@ const Login = () => {
         {/* Login Form */}
         <form onSubmit={handleLogin} className="w-full space-y-4">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-white/90">
+            <label className="text-sm font-medium text-white">
               Username
             </label>
             <Input
@@ -56,12 +56,12 @@ const Login = () => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Enter your username"
-              className="h-12 rounded-xl bg-white/95 border-0 text-foreground placeholder:text-muted-foreground shadow-lg"
+              className="h-12 rounded-xl bg-white border-0 text-gray-800 placeholder:text-gray-400 shadow-lg focus:ring-2 focus:ring-white/50"
             />
           </div>
           
           <div className="space-y-2">
-            <label className="text-sm font-medium text-white/90">
+            <label className="text-sm font-medium text-white">
               Password
             </label>
             <Input
@@ -69,14 +69,14 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
-              className="h-12 rounded-xl bg-white/95 border-0 text-foreground placeholder:text-muted-foreground shadow-lg"
+              className="h-12 rounded-xl bg-white border-0 text-gray-800 placeholder:text-gray-400 shadow-lg focus:ring-2 focus:ring-white/50"
             />
           </div>
           
           <Button 
             type="submit"
             disabled={loading}
-            className="w-full h-12 text-base font-semibold rounded-xl bg-white text-primary hover:bg-white/90 shadow-lg mt-6"
+            className="w-full h-12 text-base font-semibold rounded-xl bg-white text-[#145C43] hover:bg-white/90 shadow-lg mt-6"
           >
             {loading ? "Signing In..." : "Sign In"}
           </Button>
@@ -85,7 +85,7 @@ const Login = () => {
             type="button"
             variant="ghost"
             onClick={handleSkip}
-            className="w-full h-12 text-base font-medium rounded-xl text-white/90 hover:bg-white/10 hover:text-white"
+            className="w-full h-12 text-base font-medium rounded-xl text-white hover:bg-white/20 hover:text-white border border-white/30"
           >
             Skip for Now
           </Button>
