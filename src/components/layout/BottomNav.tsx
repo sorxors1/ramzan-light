@@ -35,12 +35,9 @@ const BottomNav = () => {
             >
               {item.isCenter ? (
                 <div 
-                  className={`flex items-center justify-center -mt-8 w-16 h-16 rounded-full shadow-xl transition-transform border-4 border-background ${
+                  className={`flex items-center justify-center -mt-8 w-16 h-16 rounded-full shadow-xl transition-transform border-4 border-amber-400 bg-white ${
                     isActive ? "scale-110" : "hover:scale-105"
                   }`}
-                  style={{
-                    background: "linear-gradient(135deg, #F5D76E 0%, #D4A017 50%, #C4961A 100%)"
-                  }}
                 >
                   <img src={kycIcon} alt="Home" className="w-11 h-11 object-contain" />
                 </div>
