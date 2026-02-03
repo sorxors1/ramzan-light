@@ -42,7 +42,7 @@ const BottomNav = () => {
                     background: "linear-gradient(135deg, #F5D76E 0%, #D4A017 50%, #C4961A 100%)"
                   }}
                 >
-                  <img src={kycIcon} alt="Home" className="w-8 h-8 object-contain" />
+                  <img src={kycIcon} alt="Home" className="w-11 h-11 object-contain" />
                 </div>
               ) : (
               <div className={`flex flex-col items-center transition-colors rounded-xl px-3 py-2 ${

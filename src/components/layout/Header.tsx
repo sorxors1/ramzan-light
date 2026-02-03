@@ -54,7 +54,7 @@ const Header = () => {
 
         {/* Center Logo */}
         <Link to="/home" className="flex items-center">
-          <img src={kycLogo} alt="KYC Prayer Log" className="h-10 object-contain" />
+          <img src={kycLogo} alt="KYC Prayer Log" className="h-14 object-contain" />
         </Link>
 
         {/* Profile Icon */}
