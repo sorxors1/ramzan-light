@@ -1,0 +1,179 @@
+// Faisalabad timezone offset: UTC+5
+const FAISALABAD_OFFSET = 5;
+
+export interface PrayerTiming {
+  id: string;
+  date: string;
+  day_name: string;
+  fajr_start: string;
+  sunrise: string;
+  dhuhr_start: string;
+  asr_end: string;
+  maghrib_start: string;
+  isha_end: string;
+}
+
+export interface SessionWindow {
+  startTime: Date;
+  endTime: Date;
+  isActive: boolean;
+  isLocked: boolean;
+  isPast: boolean;
+}
+
+// Get current Faisalabad time
+export const getFaisalabadTime = (): Date => {
+  const now = new Date();
+  const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+  return new Date(utc + 3600000 * FAISALABAD_OFFSET);
+};
+
+// Format time for display
+export const formatTime = (date: Date): string => {
+  return date.toLocaleTimeString('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: true,
+  });
+};
+
+// Format date for display
+export const formatDate = (date: Date): string => {
+  return date.toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+};
+
+// Format date for Urdu display
+export const formatDateUrdu = (date: Date): string => {
+  const days: Record<number, string> = {
+    0: 'اتوار',
+    1: 'پیر',
+    2: 'منگل',
+    3: 'بدھ',
+    4: 'جمعرات',
+    5: 'جمعہ',
+    6: 'ہفتہ',
+  };
+  return days[date.getDay()] || '';
+};
+
+// Get date string in YYYY-MM-DD format for Faisalabad timezone
+export const getFaisalabadDateString = (): string => {
+  const faisalabadTime = getFaisalabadTime();
+  return faisalabadTime.toISOString().split('T')[0];
+};
+
+// Parse time string (HH:MM) to Date object for today in Faisalabad
+export const parseTimeToDate = (timeStr: string, dateStr: string): Date => {
+  const [hours, minutes] = timeStr.split(':').map(Number);
+  const date = new Date(dateStr);
+  date.setHours(hours, minutes, 0, 0);
+  return date;
+};
+
+// Get session windows for a given day's timing
+export const getSessionWindows = (
+  timing: PrayerTiming,
+  currentTime: Date
+): Record<string, SessionWindow> => {
+  const dateStr = timing.date;
+  
+  // Fajr: from fajr_start to sunrise
+  const fajrStart = parseTimeToDate(timing.fajr_start, dateStr);
+  const fajrEnd = parseTimeToDate(timing.sunrise, dateStr);
+  
+  // Zoharain: from dhuhr_start to asr_end
+  const zoharainStart = parseTimeToDate(timing.dhuhr_start, dateStr);
+  const zoharainEnd = parseTimeToDate(timing.asr_end, dateStr);
+  
+  // Magribain: from maghrib_start to isha_end
+  const magribainStart = parseTimeToDate(timing.maghrib_start, dateStr);
+  const magribainEnd = parseTimeToDate(timing.isha_end, dateStr);
+
+  const getSessionStatus = (start: Date, end: Date): SessionWindow => {
+    const isActive = currentTime >= start && currentTime <= end;
+    const isPast = currentTime > end;
+    const isLocked = isPast;
+    
+    return { startTime: start, endTime: end, isActive, isLocked, isPast };
+  };
+
+  return {
+    fajr: getSessionStatus(fajrStart, fajrEnd),
+    zoharain: getSessionStatus(zoharainStart, zoharainEnd),
+    magribain: getSessionStatus(magribainStart, magribainEnd),
+  };
+};
+
+// Calculate time percentage (which third of the window)
+export const calculateTimePercentage = (
+  currentTime: Date,
+  startTime: Date,
+  endTime: Date
+): number => {
+  const totalDuration = endTime.getTime() - startTime.getTime();
+  const elapsed = currentTime.getTime() - startTime.getTime();
+  return Math.min(100, Math.max(0, (elapsed / totalDuration) * 100));
+};
+
+// Get feedback tier based on percentage
+export type FeedbackTier = 'early' | 'middle' | 'late';
+
+export const getFeedbackTier = (percentage: number): FeedbackTier => {
+  if (percentage <= 33.33) return 'early';
+  if (percentage <= 66.66) return 'middle';
+  return 'late';
+};
+
+// Feedback messages in English and Urdu
+export interface FeedbackMessage {
+  title: string;
+  titleUrdu: string;
+  message: string;
+  messageUrdu: string;
+}
+
+export const getFeedbackMessage = (tier: FeedbackTier): FeedbackMessage => {
+  switch (tier) {
+    case 'early':
+      return {
+        title: 'Shabash!',
+        titleUrdu: 'شاباش!',
+        message: 'Excellent! You have prayed on time. May Allah accept your prayers.',
+        messageUrdu: 'بہت خوب! آپ نے وقت پر نماز پڑھی۔ اللہ آپ کی نمازیں قبول فرمائے۔',
+      };
+    case 'middle':
+      return {
+        title: 'Subhan Allah',
+        titleUrdu: 'سبحان اللہ',
+        message: 'Good! You have offered your prayer. May Allah bless you.',
+        messageUrdu: 'اچھا ہے! آپ نے نماز ادا کی۔ اللہ آپ کو برکت دے۔',
+      };
+    case 'late':
+      return {
+        title: 'Subhan Allah',
+        titleUrdu: 'سبحان اللہ',
+        message: 'You prayed at the last moment. Please try to pray on time next time.',
+        messageUrdu: 'آپ نے آخری وقت میں نماز پڑھی۔ براہ کرم اگلی بار وقت پر نماز ادا کرنے کی کوشش کریں۔',
+      };
+  }
+};
+
+// Session type names
+export const sessionNames: Record<string, { en: string; ur: string }> = {
+  fajr: { en: 'Fajr', ur: 'فجر' },
+  zoharain: { en: 'Zoharain', ur: 'ظہرین' },
+  magribain: { en: 'Magribain', ur: 'مغربین' },
+};
+
+// Status labels
+export const statusLabels = {
+  ada: { en: 'Namaz Ada', ur: 'نماز ادا' },
+  kaza: { en: 'Namaz Kaza', ur: 'نماز قضا' },
+  pending: { en: 'Pending', ur: 'زیر التوا' },
+};
