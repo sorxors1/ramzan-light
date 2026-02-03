@@ -14,7 +14,120 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      prayer_attendance: {
+        Row: {
+          created_at: string
+          date: string
+          dua_marked: boolean
+          extra_ziker: string | null
+          good_deed: string | null
+          id: string
+          marked_at: string
+          namaz_marked: boolean
+          quran_marked: boolean
+          session_type: string
+          status: string
+          time_percentage: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          dua_marked?: boolean
+          extra_ziker?: string | null
+          good_deed?: string | null
+          id?: string
+          marked_at?: string
+          namaz_marked?: boolean
+          quran_marked?: boolean
+          session_type: string
+          status?: string
+          time_percentage?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          dua_marked?: boolean
+          extra_ziker?: string | null
+          good_deed?: string | null
+          id?: string
+          marked_at?: string
+          namaz_marked?: boolean
+          quran_marked?: boolean
+          session_type?: string
+          status?: string
+          time_percentage?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      prayer_timings: {
+        Row: {
+          asr_end: string
+          created_at: string
+          date: string
+          day_name: string
+          dhuhr_start: string
+          fajr_start: string
+          id: string
+          isha_end: string
+          maghrib_start: string
+          sunrise: string
+        }
+        Insert: {
+          asr_end: string
+          created_at?: string
+          date: string
+          day_name: string
+          dhuhr_start: string
+          fajr_start: string
+          id?: string
+          isha_end: string
+          maghrib_start: string
+          sunrise: string
+        }
+        Update: {
+          asr_end?: string
+          created_at?: string
+          date?: string
+          day_name?: string
+          dhuhr_start?: string
+          fajr_start?: string
+          id?: string
+          isha_end?: string
+          maghrib_start?: string
+          sunrise?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
