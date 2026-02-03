@@ -1,7 +1,6 @@
 import { Menu, User } from "lucide-react";
 import { Link } from "react-router-dom";
-import logo from "@/assets/logo.png";
-import headerLogo from "@/assets/header-logo.png";
+import kycLogo from "@/assets/kyc-logo.png";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useState } from "react";
 
@@ -35,7 +34,7 @@ const Header = () => {
           <SheetContent side="left" className="w-72 bg-background p-0">
             <div className="flex flex-col h-full">
               <div className="p-6 bg-primary">
-                <img src={logo} alt="RamzanOne Logo" className="h-12 object-contain" />
+                <img src={kycLogo} alt="KYC Prayer Log" className="h-12 object-contain" />
               </div>
               <nav className="flex-1 py-4">
                 {menuItems.map((item) => (
@@ -55,7 +54,7 @@ const Header = () => {
 
         {/* Center Logo */}
         <Link to="/home" className="flex items-center">
-          <img src={headerLogo} alt="RamzanOne" className="h-10 object-contain" />
+          <img src={kycLogo} alt="KYC Prayer Log" className="h-10 object-contain" />
         </Link>
 
         {/* Profile Icon */}
