@@ -1,6 +1,6 @@
 import { BookOpenText, ChartColumnBig, InfoIcon, PhoneCall } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-import homeIcon from "@/assets/home-icon.png";
+import kycIcon from "@/assets/kyc-icon.png";
 
 const BottomNav = () => {
   const location = useLocation();
@@ -42,7 +42,7 @@ const BottomNav = () => {
                     background: "linear-gradient(135deg, #F5D76E 0%, #D4A017 50%, #C4961A 100%)"
                   }}
                 >
-                  <img src={homeIcon} alt="Home" className="w-10 h-10 object-contain" />
+                  <img src={kycIcon} alt="Home" className="w-8 h-8 object-contain" />
                 </div>
               ) : (
               <div className={`flex flex-col items-center transition-colors rounded-xl px-3 py-2 ${
