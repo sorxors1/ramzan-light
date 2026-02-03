@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Phone, Scroll, BookOpen, ChartColumnBig, InfoIcon, Settings } from "lucide-react";
 import { useEffect, useState } from "react";
-import mosqueBanner from "@/assets/mosque-banner.png";
+import kaabaBanner from "@/assets/kaaba-banner.jpeg";
 import Header from "@/components/layout/Header";
 import BottomNav from "@/components/layout/BottomNav";
 
@@ -96,9 +96,9 @@ const Home = () => {
         {/* Banner Image - Behind Header */}
         <div className="absolute top-0 left-0 right-0 h-56 overflow-hidden z-0">
           <img 
-            src={mosqueBanner} 
-            alt="Mosque Banner" 
-            className="w-full h-full object-cover object-top"
+            src={kaabaBanner} 
+            alt="Kaaba Banner" 
+            className="w-full h-full object-cover object-center"
           />
           {/* Fade effect at bottom */}
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
