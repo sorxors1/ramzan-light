@@ -148,16 +148,15 @@ const PrayerDetail = () => {
     <AppLayout>
       <div className="px-4 py-6 animate-fade-in">
         {/* Header */}
-        <div className="flex items-center gap-3 mb-4">
-          <Link to="/attendance" className="p-2 rounded-lg hover:bg-accent transition-colors">
-            <ArrowLeft className="w-5 h-5 text-foreground" />
-          </Link>
-          <div>
-            <h1 className="text-2xl font-display font-bold text-foreground">
-              {sessionName.en}
-            </h1>
-            <p className="text-lg font-urdu text-muted-foreground">{sessionName.ur}</p>
+        <div className="flex flex-col items-center mb-4">
+          <div className="w-full flex items-center mb-2">
+            <Link to="/attendance" className="p-2 rounded-lg hover:bg-accent transition-colors">
+              <ArrowLeft className="w-5 h-5 text-foreground" />
+            </Link>
           </div>
+          <h1 className="text-2xl font-display font-bold text-foreground text-center">
+            {sessionName.en} <span className="font-urdu text-muted-foreground">{sessionName.ur}</span>
+          </h1>
         </div>
 
         {/* Clock */}
