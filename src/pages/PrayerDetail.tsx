@@ -203,7 +203,7 @@ const PrayerDetail = () => {
         </p>
 
         {/* Check Items */}
-        <div className="space-y-4 mb-6">
+        <div className="space-y-5 mb-6">
           {/* Namaz - Required */}
           <CheckItem
             id="namaz"
