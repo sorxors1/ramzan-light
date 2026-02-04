@@ -163,21 +163,21 @@ const Reports = () => {
   return (
     <AppLayout>
       <div className="px-4 py-6 animate-fade-in">
-        <div className="flex items-center gap-3 mb-6">
+        <div className="flex items-center gap-3 mb-4">
           <Link to="/home" className="p-2 rounded-lg hover:bg-accent transition-colors">
             <ArrowLeft className="w-5 h-5 text-foreground" />
           </Link>
-          <div>
+          <div className="flex-1 text-center pr-10">
             <h1 className="text-2xl font-display font-bold text-foreground">
               Your Progress
             </h1>
-            <p className="text-sm font-urdu text-muted-foreground">آپ کی پیش رفت</p>
+            <p className="text-sm font-urdu text-muted-foreground mt-0.5">آپ کی پیش رفت</p>
           </div>
         </div>
 
-        <p className="text-muted-foreground text-sm mb-6">
+        <p className="text-muted-foreground text-sm mb-6 text-center">
           Track your Ramadan journey
-          <span className="block text-xs font-urdu mt-1">اپنے رمضان کے سفر کو ٹریک کریں</span>
+          <span className="block text-xs font-urdu mt-0.5">اپنے رمضان کے سفر کو ٹریک کریں</span>
         </p>
 
         {/* Circular Progress Charts */}

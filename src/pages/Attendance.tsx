@@ -153,8 +153,8 @@ const Attendance = () => {
 
         {/* Legend */}
         <div className="mt-6 p-4 bg-card rounded-xl border border-border">
-          <h3 className="text-sm font-semibold text-foreground mb-3">Status Legend</h3>
-          <div className="grid grid-cols-2 gap-2 text-xs">
+          <h3 className="text-sm font-semibold text-foreground mb-3 text-center">Status Legend</h3>
+          <div className="flex justify-center gap-6 text-xs">
             <div className="flex items-center gap-2">
               <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center">
                 <Check className="w-3 h-3 text-white" />
@@ -268,9 +268,9 @@ const PrayerCard = ({
             <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30">
               <Icon className="w-6 h-6 text-white" />
             </div>
-            <div>
+            <div className="flex items-baseline gap-2">
               <h3 className="text-xl font-semibold text-white">{prayer.name}</h3>
-              <p className="text-sm text-white/80 font-urdu">{prayer.nameUrdu}</p>
+              <span className="text-base text-white/80 font-urdu">{prayer.nameUrdu}</span>
             </div>
           </div>
         </div>
