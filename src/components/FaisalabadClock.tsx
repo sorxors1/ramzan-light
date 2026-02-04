@@ -31,10 +31,7 @@ const FaisalabadClock = () => {
           <div className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center">
             <Calendar className="w-4 h-4 text-secondary" />
           </div>
-          <div>
-            <p className="text-xs font-medium text-foreground">{formatDate(time)}</p>
-            <p className="text-xs text-muted-foreground font-urdu">{formatDateUrdu(time)}</p>
-          </div>
+          <p className="text-xs font-medium text-foreground">{formatDate(time)}</p>
         </div>
       </div>
     </div>
