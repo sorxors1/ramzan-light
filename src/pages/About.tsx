@@ -1,5 +1,5 @@
 import AppLayout from "@/components/layout/AppLayout";
-import kyfLogo from "@/assets/kyc-logo.png";
+import kyfLogo from "@/assets/kyf-logo.png";
 
 const About = () => {
   return (

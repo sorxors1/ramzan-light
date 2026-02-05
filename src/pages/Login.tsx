@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import kycLogo from "@/assets/kyc-logo.png";
+import kyfLogo from "@/assets/kyf-logo.png";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -40,8 +40,8 @@ const Login = () => {
       {/* Logo Section */}
       <div className="flex-1 flex flex-col items-center justify-center w-full max-w-sm">
         <img 
-          src={kycLogo} 
-          alt="KYC Prayer Log" 
+          src={kyfLogo} 
+          alt="KYF Faisalabad" 
           className="w-48 h-auto object-contain mb-12 drop-shadow-lg"
         />
         

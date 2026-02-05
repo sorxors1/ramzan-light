@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
-import logo from "@/assets/logo.png";
+import kyfLogo from "@/assets/kyf-logo.png";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -39,8 +39,8 @@ const SignIn = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-6 animate-fade-in">
       <img 
-        src={logo} 
-        alt="RamzanOne" 
+        src={kyfLogo} 
+        alt="KYF Faisalabad" 
         className="w-48 h-auto object-contain mb-8"
       />
       
