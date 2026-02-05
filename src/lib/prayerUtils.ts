@@ -87,11 +87,11 @@ export const getSessionWindows = (
   const fajrStart = parseTimeToDate(timing.fajr_start, dateStr);
   const fajrEnd = parseTimeToDate(timing.sunrise, dateStr);
   
-  // Zoharain: from dhuhr_start to asr_end
+  // Zoharain: from dhuhr_start to maghrib_start (Dhuhr + Asr combined window)
   const zoharainStart = parseTimeToDate(timing.dhuhr_start, dateStr);
-  const zoharainEnd = parseTimeToDate(timing.asr_end, dateStr);
+  const zoharainEnd = parseTimeToDate(timing.maghrib_start, dateStr);
   
-  // Magribain: from maghrib_start to isha_end
+  // Magribain: from maghrib_start to isha_end (Maghrib + Isha combined window)
   const magribainStart = parseTimeToDate(timing.maghrib_start, dateStr);
   const magribainEnd = parseTimeToDate(timing.isha_end, dateStr);
 

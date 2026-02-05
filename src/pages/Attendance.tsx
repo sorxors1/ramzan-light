@@ -223,7 +223,7 @@ const PrayerCard = ({
       <div className={`absolute inset-0 ${locked ? "bg-black/70" : "bg-black/50"}`} />
 
       {/* Lock Overlay */}
-      {locked && (
+      {(locked || (marked && !active)) && (
         <div className="absolute top-3 right-3 z-20">
           <div className="w-8 h-8 rounded-full bg-black/50 flex items-center justify-center">
             <Lock className="w-4 h-4 text-white/70" />
@@ -252,8 +252,8 @@ const PrayerCard = ({
       )}
 
       {/* Active Indicator */}
-      {active && (
-        <div className="absolute top-3 left-3 z-20">
+      {active && !marked && (
+        <div className="absolute top-3 right-3 z-20">
           <div className="flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium bg-primary text-primary-foreground animate-pulse">
             <span className="w-2 h-2 rounded-full bg-white animate-ping" />
             <span>Active Now</span>
