@@ -41,7 +41,8 @@ const PrayerDetail = () => {
   const [showFeedback, setShowFeedback] = useState(false);
   const [feedbackData, setFeedbackData] = useState<FeedbackMessage | null>(null);
   const [isLocked, setIsLocked] = useState(false);
-  const [isActive, setIsActive] = useState(false);
+  const [isActive, setIsActive] = useState(prayerId === "test");
+  const isTestPrayer = prayerId === "test";
 
   const sessionName = sessionNames[prayerId || ""] || { en: "Prayer", ur: "نماز" };
 
@@ -58,6 +59,11 @@ const PrayerDetail = () => {
 
   // Check session status
   useEffect(() => {
+    if (isTestPrayer) {
+      setIsLocked(false);
+      setIsActive(true);
+      return;
+    }
     const checkStatus = () => {
       if (todayTiming && prayerId) {
         const currentTime = getFaisalabadTime();
@@ -73,7 +79,7 @@ const PrayerDetail = () => {
     checkStatus();
     const interval = setInterval(checkStatus, 1000);
     return () => clearInterval(interval);
-  }, [todayTiming, prayerId]);
+  }, [todayTiming, prayerId, isTestPrayer]);
 
   const handleSubmit = async () => {
     if (!isAuthenticated || !user) {
@@ -89,24 +95,26 @@ const PrayerDetail = () => {
       return;
     }
 
-    if (!todayTiming || !prayerId) {
+    if (!isTestPrayer && (!todayTiming || !prayerId)) {
       toast.error("Unable to save attendance");
       return;
     }
 
-    if (isLocked) {
+    if (!isTestPrayer && isLocked) {
       toast.error("This prayer session has ended");
       return;
     }
 
     try {
-      const currentTime = getFaisalabadTime();
-      const windows = getSessionWindows(todayTiming, currentTime);
-      const window = windows[prayerId];
-      
-      const timePercentage = window
-        ? calculateTimePercentage(currentTime, window.startTime, window.endTime)
-        : 50;
+      let timePercentage = 50;
+      if (!isTestPrayer && todayTiming && prayerId) {
+        const currentTime = getFaisalabadTime();
+        const windows = getSessionWindows(todayTiming, currentTime);
+        const window = windows[prayerId];
+        timePercentage = window
+          ? calculateTimePercentage(currentTime, window.startTime, window.endTime)
+          : 50;
+      }
 
       await saveAttendance.mutateAsync({
         userId: user.id,
@@ -297,7 +305,7 @@ const PrayerDetail = () => {
         {/* Submit Button */}
         <Button
           onClick={handleSubmit}
-          disabled={isLocked || !isAuthenticated || saveAttendance.isPending || existingAttendance?.namaz_marked}
+          disabled={(isLocked && !isTestPrayer) || !isAuthenticated || saveAttendance.isPending || existingAttendance?.namaz_marked}
           className="w-full h-14 text-lg font-semibold rounded-xl bg-primary hover:bg-primary/90 btn-shadow"
         >
           {saveAttendance.isPending ? "Saving..." : existingAttendance?.namaz_marked ? "Already Submitted" : "Submit Attendance"}

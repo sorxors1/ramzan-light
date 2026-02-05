@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import AppLayout from "@/components/layout/AppLayout";
 import FaisalabadClock from "@/components/FaisalabadClock";
-import { Sun, Sunset, Moon, ArrowLeft, Check, X, Lock } from "lucide-react";
+import { Sun, Sunset, Moon, ArrowLeft, Check, X, Lock, FlaskConical } from "lucide-react";
 import { useTodayTiming } from "@/hooks/usePrayerTimings";
 import { useTodayAttendance } from "@/hooks/usePrayerAttendance";
 import { useAuth } from "@/hooks/useAuth";
@@ -24,12 +24,14 @@ interface Prayer {
   icon: typeof Sun;
   time: string;
   backgroundImage: string;
+  isTest?: boolean;
 }
 
 const prayers: Prayer[] = [
   { id: "fajr", name: "Fajr", nameUrdu: "فجر", icon: Sun, time: "Dawn Prayer", backgroundImage: fajrBg },
   { id: "zoharain", name: "Zoharain", nameUrdu: "ظہرین", icon: Sunset, time: "Noon & Afternoon", backgroundImage: zoharainBg },
   { id: "magribain", name: "Magribain", nameUrdu: "مغربین", icon: Moon, time: "Evening & Night", backgroundImage: magribainBg },
+  { id: "test", name: "Test Prayer", nameUrdu: "ٹیسٹ", icon: FlaskConical, time: "Always Open (Testing)", backgroundImage: zoharainBg, isTest: true },
 ];
 
 const Attendance = () => {
@@ -58,13 +60,14 @@ const Attendance = () => {
   };
 
   const isSessionLocked = (prayerId: string) => {
+    if (prayerId === "test") return false; // Test prayer is never locked
     const window = sessionWindows[prayerId];
-    if (!window) return true; // Lock if no timing available
-    // Lock if past OR if not yet active (future prayer)
+    if (!window) return true;
     return window.isPast || !window.isActive;
   };
 
   const isSessionActive = (prayerId: string) => {
+    if (prayerId === "test") return true; // Test prayer is always active
     const window = sessionWindows[prayerId];
     return window?.isActive || false;
   };
@@ -115,7 +118,9 @@ const Attendance = () => {
             const window = sessionWindows[prayer.id];
             
           // Determine if clickable - also lock if already marked
-          const canClick = !locked && !marked && isAuthenticated && todayTiming;
+          const canClick = prayer.isTest 
+            ? !marked && isAuthenticated
+            : !locked && !marked && isAuthenticated && todayTiming;
             
             return (
               <div

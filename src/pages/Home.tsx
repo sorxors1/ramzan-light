@@ -188,7 +188,9 @@ const Home = () => {
                       background: "linear-gradient(135deg, #1E7F5C 0%, #28A070 50%, #4ADE80 100%)"
                     }}
                   >
-                    <img src={namazAttendanceIcon} alt="Namaz Attendance" className="w-16 h-16 mb-2" />
+                    <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center mb-2">
+                      <img src={namazAttendanceIcon} alt="Namaz Attendance" className="w-10 h-10" />
+                    </div>
                     <h3 className="text-xs font-semibold text-white text-center">Namaz Attendance</h3>
                   </div>
                 </Link>
@@ -201,7 +203,9 @@ const Home = () => {
                       background: "linear-gradient(135deg, #6366F1 0%, #818CF8 50%, #A5B4FC 100%)"
                     }}
                   >
-                    <img src={kazaNamazIcon} alt="Kaza Namaz" className="w-16 h-16 mb-2" />
+                    <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center mb-2">
+                      <img src={kazaNamazIcon} alt="Kaza Namaz" className="w-10 h-10" />
+                    </div>
                     <h3 className="text-xs font-semibold text-white text-center">Kaza Namaz</h3>
                   </div>
                 </Link>
@@ -214,7 +218,9 @@ const Home = () => {
                       background: "linear-gradient(135deg, #F59E0B 0%, #FBBF24 50%, #FCD34D 100%)"
                     }}
                   >
-                    <img src={reportsIcon} alt="Reports" className="w-16 h-16 mb-2" />
+                    <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center mb-2">
+                      <img src={reportsIcon} alt="Reports" className="w-10 h-10" />
+                    </div>
                     <h3 className="text-xs font-semibold text-white text-center">Reports</h3>
                   </div>
                 </Link>
@@ -227,7 +233,9 @@ const Home = () => {
                       background: "linear-gradient(135deg, #EC4899 0%, #F472B6 50%, #F9A8D4 100%)"
                     }}
                   >
-                    <img src={aboutUsIcon} alt="About Us" className="w-16 h-16 mb-2" />
+                    <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center mb-2">
+                      <img src={aboutUsIcon} alt="About Us" className="w-10 h-10" />
+                    </div>
                     <h3 className="text-xs font-semibold text-white text-center">About Us</h3>
                   </div>
                 </Link>
@@ -240,7 +248,9 @@ const Home = () => {
                       background: "linear-gradient(135deg, #14B8A6 0%, #2DD4BF 50%, #5EEAD4 100%)"
                     }}
                   >
-                    <img src={contactUsIcon} alt="Contact Us" className="w-16 h-16 mb-2" />
+                    <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center mb-2">
+                      <img src={contactUsIcon} alt="Contact Us" className="w-10 h-10" />
+                    </div>
                     <h3 className="text-xs font-semibold text-white text-center">Contact Us</h3>
                   </div>
                 </Link>
@@ -253,7 +263,9 @@ const Home = () => {
                       background: "linear-gradient(135deg, #8B5CF6 0%, #A78BFA 50%, #C4B5FD 100%)"
                     }}
                   >
-                    <img src={settingsIcon} alt="Profile Settings" className="w-16 h-16 mb-2" />
+                    <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center mb-2">
+                      <img src={settingsIcon} alt="Profile Settings" className="w-10 h-10" />
+                    </div>
                     <h3 className="text-xs font-semibold text-white text-center">Profile Settings</h3>
                   </div>
                 </Link>
