@@ -145,8 +145,8 @@ const Home = () => {
                   
                   <div className="w-px h-10 bg-white/30 mx-4" />
                   
-                  <div className="text-right text-white flex-1">
-                    <p className="text-white/60 text-[10px] uppercase tracking-wide">Pakistan Time</p>
+                   <div className="text-right text-white flex-1">
+                     <p className="text-white/60 text-[10px] uppercase tracking-wide">Faisalabad Time</p>
                     <p className="text-xl font-bold font-display">{formatTime(prayerInfo.next.time)}</p>
                   </div>
                 </div>
