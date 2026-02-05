@@ -218,7 +218,9 @@ const Home = () => {
                       background: "linear-gradient(135deg, #F59E0B 0%, #FBBF24 50%, #FCD34D 100%)"
                     }}
                   >
-                    <img src={reportsIcon} alt="Reports" className="w-16 h-16 mb-2" />
+                    <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center mb-2">
+                      <img src={reportsIcon} alt="Reports" className="w-10 h-10" />
+                    </div>
                     <h3 className="text-xs font-semibold text-white text-center">Reports</h3>
                   </div>
                 </Link>
