@@ -40,8 +40,8 @@ const Login = () => {
       {/* Logo Section */}
       <div className="flex-1 flex flex-col items-center justify-center w-full max-w-sm">
         <img 
-          src={kycLogo} 
-          alt="KYC Prayer Log" 
+          src={kyfLogo} 
+          alt="KYF Faisalabad" 
           className="w-48 h-auto object-contain mb-12 drop-shadow-lg"
         />
         

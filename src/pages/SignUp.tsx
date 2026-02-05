@@ -53,8 +53,8 @@ const SignUp = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-6 animate-fade-in">
       <img 
-        src={logo} 
-        alt="RamzanOne" 
+        src={kyfLogo} 
+        alt="KYF Faisalabad" 
         className="w-48 h-auto object-contain mb-8"
       />
       

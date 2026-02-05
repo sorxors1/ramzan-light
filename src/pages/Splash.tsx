@@ -21,8 +21,8 @@ const Splash = () => {
     <div className={`min-h-screen flex flex-col items-center justify-center bg-background transition-opacity duration-500 ${fadeOut ? "opacity-0" : "opacity-100"}`}>
       <div className="animate-scale-in">
         <img 
-          src={kycLogo} 
-          alt="KYC Prayer Log" 
+          src={kyfLogo} 
+          alt="KYF Faisalabad" 
           className="w-64 h-auto object-contain"
         />
       </div>
