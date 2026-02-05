@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import kycLogo from "@/assets/kyc-logo.png";
+import kyfLogo from "@/assets/kyf-logo.png";
 
 const Splash = () => {
   const navigate = useNavigate();

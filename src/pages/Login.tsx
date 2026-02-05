@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import kycLogo from "@/assets/kyc-logo.png";
+import kyfLogo from "@/assets/kyf-logo.png";
 
 const Login = () => {
   const navigate = useNavigate();
