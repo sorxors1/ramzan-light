@@ -188,7 +188,7 @@ const Reports = () => {
             Overall Progress
             <span className="block text-sm font-urdu text-muted-foreground mt-1">مجموعی پیش رفت</span>
           </h2>
-          <div className="flex justify-around items-center flex-wrap gap-4">
+          <div className="flex justify-between items-center gap-1">
             {stats.map((stat, index) => (
               <div 
                 key={stat.label} 
