@@ -253,7 +253,7 @@ const Home = () => {
                       background: "linear-gradient(135deg, #8B5CF6 0%, #A78BFA 50%, #C4B5FD 100%)"
                     }}
                   >
-                    <img src={settingsIcon} alt="Profile Settings" className="w-14 h-14 mb-2" />
+                    <img src={settingsIcon} alt="Profile Settings" className="w-16 h-16 mb-2" />
                     <h3 className="text-xs font-semibold text-white text-center">Profile Settings</h3>
                   </div>
                 </Link>
