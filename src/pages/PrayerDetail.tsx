@@ -305,7 +305,7 @@ const PrayerDetail = () => {
         {/* Submit Button */}
         <Button
           onClick={handleSubmit}
-          disabled={isLocked || !isAuthenticated || saveAttendance.isPending || existingAttendance?.namaz_marked}
+          disabled={(isLocked && !isTestPrayer) || !isAuthenticated || saveAttendance.isPending || existingAttendance?.namaz_marked}
           className="w-full h-14 text-lg font-semibold rounded-xl bg-primary hover:bg-primary/90 btn-shadow"
         >
           {saveAttendance.isPending ? "Saving..." : existingAttendance?.namaz_marked ? "Already Submitted" : "Submit Attendance"}
