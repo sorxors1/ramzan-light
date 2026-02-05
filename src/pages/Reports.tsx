@@ -108,7 +108,8 @@ const Reports = () => {
             r="45"
             strokeWidth="8"
             fill="none"
-            className="stroke-muted"
+            stroke="#e5e7eb"
+            opacity="0.5"
           />
           <circle
             cx="56"
