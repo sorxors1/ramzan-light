@@ -60,13 +60,14 @@ const Attendance = () => {
   };
 
   const isSessionLocked = (prayerId: string) => {
+    if (prayerId === "test") return false; // Test prayer is never locked
     const window = sessionWindows[prayerId];
-    if (!window) return true; // Lock if no timing available
-    // Lock if past OR if not yet active (future prayer)
+    if (!window) return true;
     return window.isPast || !window.isActive;
   };
 
   const isSessionActive = (prayerId: string) => {
+    if (prayerId === "test") return true; // Test prayer is always active
     const window = sessionWindows[prayerId];
     return window?.isActive || false;
   };
