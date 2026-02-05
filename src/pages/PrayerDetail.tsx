@@ -227,7 +227,7 @@ const PrayerDetail = () => {
             checked={namazChecked}
             onChange={setNamazChecked}
             required
-            disabled={isLocked}
+            disabled={isLocked || existingAttendance?.namaz_marked}
           />
 
           {/* Dua */}
@@ -240,7 +240,7 @@ const PrayerDetail = () => {
             icon={BookMarked}
             checked={duaChecked}
             onChange={setDuaChecked}
-            disabled={isLocked}
+            disabled={isLocked || existingAttendance?.namaz_marked}
           />
 
           {/* Quran */}
@@ -253,7 +253,7 @@ const PrayerDetail = () => {
             icon={BookOpen}
             checked={quranChecked}
             onChange={setQuranChecked}
-            disabled={isLocked}
+            disabled={isLocked || existingAttendance?.namaz_marked}
           />
         </div>
 
@@ -270,7 +270,7 @@ const PrayerDetail = () => {
             value={extraZiker}
             onChange={(e) => setExtraZiker(e.target.value)}
             className="min-h-[80px] resize-none"
-            disabled={isLocked}
+            disabled={isLocked || existingAttendance?.namaz_marked}
           />
         </div>
 
@@ -287,17 +287,17 @@ const PrayerDetail = () => {
             value={goodDeed}
             onChange={(e) => setGoodDeed(e.target.value)}
             className="min-h-[80px] resize-none"
-            disabled={isLocked}
+            disabled={isLocked || existingAttendance?.namaz_marked}
           />
         </div>
 
         {/* Submit Button */}
         <Button
           onClick={handleSubmit}
-          disabled={isLocked || !isAuthenticated || saveAttendance.isPending}
+          disabled={isLocked || !isAuthenticated || saveAttendance.isPending || existingAttendance?.namaz_marked}
           className="w-full h-14 text-lg font-semibold rounded-xl bg-primary hover:bg-primary/90 btn-shadow"
         >
-          {saveAttendance.isPending ? "Saving..." : "Submit Attendance"}
+          {saveAttendance.isPending ? "Saving..." : existingAttendance?.namaz_marked ? "Already Submitted" : "Submit Attendance"}
         </Button>
 
         {/* Required Note */}
