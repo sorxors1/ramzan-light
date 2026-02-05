@@ -169,6 +169,7 @@ export const sessionNames: Record<string, { en: string; ur: string }> = {
   fajr: { en: 'Fajr', ur: 'فجر' },
   zoharain: { en: 'Zoharain', ur: 'ظہرین' },
   magribain: { en: 'Magribain', ur: 'مغربین' },
+  test: { en: 'Test Prayer', ur: 'ٹیسٹ' },
 };
 
 // Status labels

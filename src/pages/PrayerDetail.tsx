@@ -41,7 +41,8 @@ const PrayerDetail = () => {
   const [showFeedback, setShowFeedback] = useState(false);
   const [feedbackData, setFeedbackData] = useState<FeedbackMessage | null>(null);
   const [isLocked, setIsLocked] = useState(false);
-  const [isActive, setIsActive] = useState(false);
+  const [isActive, setIsActive] = useState(prayerId === "test");
+  const isTestPrayer = prayerId === "test";
 
   const sessionName = sessionNames[prayerId || ""] || { en: "Prayer", ur: "نماز" };
 
