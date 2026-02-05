@@ -18,6 +18,8 @@ const Reports = () => {
   const namazCount = attendance.filter((a) => a.namaz_marked).length;
   const duaCount = attendance.filter((a) => a.dua_marked).length;
   const quranCount = attendance.filter((a) => a.quran_marked).length;
+  const extraZikerCount = attendance.filter((a) => a.extra_ziker && a.extra_ziker.trim() !== "").length;
+  const goodDeedCount = attendance.filter((a) => a.good_deed && a.good_deed.trim() !== "").length;
   
   // On-time percentages
   const earlyPrayers = attendance.filter((a) => a.time_percentage && a.time_percentage <= 33).length;
@@ -250,6 +252,48 @@ const Reports = () => {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* Worship Activities Detail */}
+        <div className="bg-card rounded-2xl p-6 prayer-card-shadow animate-slide-up mt-6">
+          <h2 className="text-lg font-semibold text-foreground mb-4">
+            Worship Activities
+            <span className="block text-sm font-urdu text-muted-foreground mt-1">عبادات کی تفصیل</span>
+          </h2>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="bg-primary/10 rounded-xl p-4 text-center">
+              <div className="w-10 h-10 mx-auto mb-2 rounded-full bg-primary/20 flex items-center justify-center">
+                <Sparkles className="w-5 h-5 text-primary" />
+              </div>
+              <p className="text-2xl font-bold text-primary">{duaCount}</p>
+              <p className="text-xs text-foreground font-medium">Dua Recited</p>
+              <p className="text-xs text-muted-foreground font-urdu">دعائیں</p>
+            </div>
+            <div className="bg-amber-500/10 rounded-xl p-4 text-center">
+              <div className="w-10 h-10 mx-auto mb-2 rounded-full bg-amber-500/20 flex items-center justify-center">
+                <BookOpen className="w-5 h-5 text-amber-600" />
+              </div>
+              <p className="text-2xl font-bold text-amber-600">{quranCount}</p>
+              <p className="text-xs text-foreground font-medium">Quran Sessions</p>
+              <p className="text-xs text-muted-foreground font-urdu">قرآن تلاوت</p>
+            </div>
+            <div className="bg-secondary/10 rounded-xl p-4 text-center">
+              <div className="w-10 h-10 mx-auto mb-2 rounded-full bg-secondary/20 flex items-center justify-center">
+                <Heart className="w-5 h-5 text-secondary" />
+              </div>
+              <p className="text-2xl font-bold text-secondary">{extraZikerCount}</p>
+              <p className="text-xs text-foreground font-medium">Extra Dhikr</p>
+              <p className="text-xs text-muted-foreground font-urdu">اضافی ذکر</p>
+            </div>
+            <div className="bg-emerald-500/10 rounded-xl p-4 text-center">
+              <div className="w-10 h-10 mx-auto mb-2 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                <CheckCircle className="w-5 h-5 text-emerald-600" />
+              </div>
+              <p className="text-2xl font-bold text-emerald-600">{goodDeedCount}</p>
+              <p className="text-xs text-foreground font-medium">Good Deeds</p>
+              <p className="text-xs text-muted-foreground font-urdu">نیک اعمال</p>
+            </div>
           </div>
         </div>
       </div>
