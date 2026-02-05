@@ -227,7 +227,7 @@ const Home = () => {
                       background: "linear-gradient(135deg, #EC4899 0%, #F472B6 50%, #F9A8D4 100%)"
                     }}
                   >
-                    <img src={aboutUsIcon} alt="About Us" className="w-14 h-14 mb-2" />
+                    <img src={aboutUsIcon} alt="About Us" className="w-16 h-16 mb-2" />
                     <h3 className="text-xs font-semibold text-white text-center">About Us</h3>
                   </div>
                 </Link>
