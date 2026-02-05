@@ -118,7 +118,9 @@ const Attendance = () => {
             const window = sessionWindows[prayer.id];
             
           // Determine if clickable - also lock if already marked
-          const canClick = !locked && !marked && isAuthenticated && todayTiming;
+          const canClick = prayer.isTest 
+            ? !marked && isAuthenticated
+            : !locked && !marked && isAuthenticated && todayTiming;
             
             return (
               <div
