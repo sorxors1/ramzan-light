@@ -1,10 +1,15 @@
 import { Link } from "react-router-dom";
-import { Phone, Scroll, BookOpen, ChartColumnBig, InfoIcon, Settings } from "lucide-react";
 import { useEffect, useState } from "react";
 import kaabaBannerGif from "@/assets/kaaba-banner.gif";
 import kaabaBannerFallback from "@/assets/kaaba-banner-fallback.png";
 import Header from "@/components/layout/Header";
 import BottomNav from "@/components/layout/BottomNav";
+import namazAttendanceIcon from "@/assets/namaz-attendance-icon.svg";
+import kazaNamazIcon from "@/assets/kaza-namaz-icon.svg";
+import reportsIcon from "@/assets/reports-icon.svg";
+import aboutUsIcon from "@/assets/about-us-icon.svg";
+import contactUsIcon from "@/assets/contact-us-icon.svg";
+import settingsIcon from "@/assets/settings-icon.svg";
 import { getFaisalabadTime } from "@/lib/prayerUtils";
 
 // Prayer times for Pakistan (Faisalabad) - these would ideally come from an API
