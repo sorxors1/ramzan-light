@@ -106,13 +106,15 @@ const PrayerDetail = () => {
     }
 
     try {
-      const currentTime = getFaisalabadTime();
-      const windows = getSessionWindows(todayTiming, currentTime);
-      const window = windows[prayerId];
-      
-      const timePercentage = window
-        ? calculateTimePercentage(currentTime, window.startTime, window.endTime)
-        : 50;
+      let timePercentage = 50;
+      if (!isTestPrayer && todayTiming && prayerId) {
+        const currentTime = getFaisalabadTime();
+        const windows = getSessionWindows(todayTiming, currentTime);
+        const window = windows[prayerId];
+        timePercentage = window
+          ? calculateTimePercentage(currentTime, window.startTime, window.endTime)
+          : 50;
+      }
 
       await saveAttendance.mutateAsync({
         userId: user.id,
