@@ -240,7 +240,7 @@ const Home = () => {
                       background: "linear-gradient(135deg, #14B8A6 0%, #2DD4BF 50%, #5EEAD4 100%)"
                     }}
                   >
-                    <img src={contactUsIcon} alt="Contact Us" className="w-14 h-14 mb-2" />
+                    <img src={contactUsIcon} alt="Contact Us" className="w-16 h-16 mb-2" />
                     <h3 className="text-xs font-semibold text-white text-center">Contact Us</h3>
                   </div>
                 </Link>
