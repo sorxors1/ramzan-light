@@ -100,16 +100,15 @@ const Reports = () => {
     const strokeDashoffset = circumference - (percentage / 100) * circumference;
 
     return (
-      <div className="relative w-28 h-28">
-        <svg className="w-full h-full transform -rotate-90">
+      <div className="relative w-20 h-20">
+        <svg className="w-full h-full transform -rotate-90" viewBox="0 0 112 112">
           <circle
             cx="56"
             cy="56"
             r="45"
             strokeWidth="8"
             fill="none"
-            stroke="#e5e7eb"
-            opacity="0.5"
+            stroke="#d1d5db"
           />
           <circle
             cx="56"
@@ -125,7 +124,7 @@ const Reports = () => {
           />
         </svg>
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-2xl font-bold text-foreground">{Math.round(percentage)}%</span>
+          <span className="text-lg font-bold text-foreground">{Math.round(percentage)}%</span>
         </div>
       </div>
     );
