@@ -201,7 +201,7 @@ const Home = () => {
                       background: "linear-gradient(135deg, #6366F1 0%, #818CF8 50%, #A5B4FC 100%)"
                     }}
                   >
-                    <img src={kazaNamazIcon} alt="Kaza Namaz" className="w-14 h-14 mb-2" />
+                    <img src={kazaNamazIcon} alt="Kaza Namaz" className="w-16 h-16 mb-2" />
                     <h3 className="text-xs font-semibold text-white text-center">Kaza Namaz</h3>
                   </div>
                 </Link>
