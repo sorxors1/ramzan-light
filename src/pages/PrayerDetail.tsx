@@ -163,18 +163,31 @@ const PrayerDetail = () => {
         <FaisalabadClock />
 
         {/* Status Banner */}
-        {isLocked && (
+        {(isLocked || (existingAttendance?.namaz_marked && existingAttendance?.status === "ada")) && (
           <div className="bg-destructive/10 border border-destructive/30 rounded-xl p-4 mb-6">
             <p className="text-destructive text-sm text-center font-medium">
-              This prayer session has ended and cannot be modified.
+              {existingAttendance?.status === "ada" 
+                ? "You have already marked attendance for this session."
+                : "This prayer session has ended and cannot be modified."}
             </p>
             <p className="text-destructive/80 text-xs text-center font-urdu mt-1">
-              اس نماز کا وقت ختم ہو چکا ہے۔
+              {existingAttendance?.status === "ada"
+                ? "آپ نے اس نماز کی حاضری پہلے ہی لگا دی ہے۔"
+                : "اس نماز کا وقت ختم ہو چکا ہے۔"}
             </p>
+            {existingAttendance?.status === "ada" && (
+              <div className="flex justify-center mt-3">
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-500/20 text-green-600">
+                  <Check className="w-4 h-4" />
+                  <span className="text-sm font-medium">Namaz Ada</span>
+                  <span className="text-sm font-urdu">نماز ادا</span>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
-        {isActive && !isLocked && (
+        {isActive && !isLocked && !existingAttendance?.namaz_marked && (
           <div className="bg-primary/10 border border-primary/30 rounded-xl p-4 mb-6">
             <p className="text-primary text-sm text-center font-medium">
               ✨ This prayer session is currently active
