@@ -18,6 +18,8 @@ const Reports = () => {
   const namazCount = attendance.filter((a) => a.namaz_marked).length;
   const duaCount = attendance.filter((a) => a.dua_marked).length;
   const quranCount = attendance.filter((a) => a.quran_marked).length;
+  const extraZikerCount = attendance.filter((a) => a.extra_ziker && a.extra_ziker.trim() !== "").length;
+  const goodDeedCount = attendance.filter((a) => a.good_deed && a.good_deed.trim() !== "").length;
   
   // On-time percentages
   const earlyPrayers = attendance.filter((a) => a.time_percentage && a.time_percentage <= 33).length;
