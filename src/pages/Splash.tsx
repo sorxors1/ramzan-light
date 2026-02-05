@@ -10,7 +10,7 @@ const Splash = () => {
     const timer = setTimeout(() => {
       setFadeOut(true);
       setTimeout(() => {
-        navigate("/home");
+        navigate("/signin");
       }, 500);
     }, 2500);
 
