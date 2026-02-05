@@ -60,7 +60,8 @@ const Attendance = () => {
   const isSessionLocked = (prayerId: string) => {
     const window = sessionWindows[prayerId];
     if (!window) return true; // Lock if no timing available
-    return window.isLocked;
+    // Lock if past OR if not yet active (future prayer)
+    return window.isPast || !window.isActive;
   };
 
   const isSessionActive = (prayerId: string) => {
@@ -233,7 +234,7 @@ const PrayerCard = ({
 
       {/* Status Badge */}
       {status !== "pending" && (
-        <div className="absolute top-3 left-3 z-20">
+        <div className="absolute top-3 right-3 z-20">
           <div
             className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium ${
               status === "ada"
@@ -252,7 +253,7 @@ const PrayerCard = ({
       )}
 
       {/* Active Indicator */}
-      {active && !marked && (
+      {active && !marked && status === "pending" && (
         <div className="absolute top-3 right-3 z-20">
           <div className="flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium bg-primary text-primary-foreground animate-pulse">
             <span className="w-2 h-2 rounded-full bg-white animate-ping" />
