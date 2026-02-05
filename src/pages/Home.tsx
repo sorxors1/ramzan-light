@@ -188,7 +188,9 @@ const Home = () => {
                       background: "linear-gradient(135deg, #1E7F5C 0%, #28A070 50%, #4ADE80 100%)"
                     }}
                   >
-                    <img src={namazAttendanceIcon} alt="Namaz Attendance" className="w-16 h-16 mb-2" />
+                    <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center mb-2">
+                      <img src={namazAttendanceIcon} alt="Namaz Attendance" className="w-10 h-10" />
+                    </div>
                     <h3 className="text-xs font-semibold text-white text-center">Namaz Attendance</h3>
                   </div>
                 </Link>
