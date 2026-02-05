@@ -59,6 +59,11 @@ const PrayerDetail = () => {
 
   // Check session status
   useEffect(() => {
+    if (isTestPrayer) {
+      setIsLocked(false);
+      setIsActive(true);
+      return;
+    }
     const checkStatus = () => {
       if (todayTiming && prayerId) {
         const currentTime = getFaisalabadTime();
@@ -74,7 +79,7 @@ const PrayerDetail = () => {
     checkStatus();
     const interval = setInterval(checkStatus, 1000);
     return () => clearInterval(interval);
-  }, [todayTiming, prayerId]);
+  }, [todayTiming, prayerId, isTestPrayer]);
 
   const handleSubmit = async () => {
     if (!isAuthenticated || !user) {
