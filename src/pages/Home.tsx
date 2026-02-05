@@ -1,10 +1,15 @@
 import { Link } from "react-router-dom";
-import { Phone, Scroll, BookOpen, ChartColumnBig, InfoIcon, Settings } from "lucide-react";
 import { useEffect, useState } from "react";
 import kaabaBannerGif from "@/assets/kaaba-banner.gif";
 import kaabaBannerFallback from "@/assets/kaaba-banner-fallback.png";
 import Header from "@/components/layout/Header";
 import BottomNav from "@/components/layout/BottomNav";
+import namazAttendanceIcon from "@/assets/namaz-attendance-icon.svg";
+import kazaNamazIcon from "@/assets/kaza-namaz-icon.svg";
+import reportsIcon from "@/assets/reports-icon.svg";
+import aboutUsIcon from "@/assets/about-us-icon.svg";
+import contactUsIcon from "@/assets/contact-us-icon.svg";
+import settingsIcon from "@/assets/settings-icon.svg";
 import { getFaisalabadTime } from "@/lib/prayerUtils";
 
 // Prayer times for Pakistan (Faisalabad) - these would ideally come from an API
@@ -178,14 +183,12 @@ const Home = () => {
                 {/* Namaz Attendance */}
                 <Link to="/attendance" className="group block">
                   <div 
-                    className="rounded-xl p-4 shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] h-24 flex flex-col items-center justify-center"
+                    className="rounded-xl p-4 shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] h-28 flex flex-col items-center justify-center"
                     style={{
                       background: "linear-gradient(135deg, #1E7F5C 0%, #28A070 50%, #4ADE80 100%)"
                     }}
                   >
-                    <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-2 shadow-sm">
-                      <Scroll className="w-5 h-5 text-emerald-600" />
-                    </div>
+                    <img src={namazAttendanceIcon} alt="Namaz Attendance" className="w-14 h-14 mb-2" />
                     <h3 className="text-xs font-semibold text-white text-center">Namaz Attendance</h3>
                   </div>
                 </Link>
@@ -193,14 +196,12 @@ const Home = () => {
                 {/* Kaza Namaz */}
                 <Link to="/kaza" className="group block">
                   <div 
-                    className="rounded-xl p-4 shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] h-24 flex flex-col items-center justify-center"
+                    className="rounded-xl p-4 shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] h-28 flex flex-col items-center justify-center"
                     style={{
                       background: "linear-gradient(135deg, #6366F1 0%, #818CF8 50%, #A5B4FC 100%)"
                     }}
                   >
-                    <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-2 shadow-sm">
-                      <BookOpen className="w-5 h-5 text-indigo-600" />
-                    </div>
+                    <img src={kazaNamazIcon} alt="Kaza Namaz" className="w-14 h-14 mb-2" />
                     <h3 className="text-xs font-semibold text-white text-center">Kaza Namaz</h3>
                   </div>
                 </Link>
@@ -208,14 +209,12 @@ const Home = () => {
                 {/* Reports */}
                 <Link to="/reports" className="group block">
                   <div 
-                    className="rounded-xl p-4 shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] h-24 flex flex-col items-center justify-center"
+                    className="rounded-xl p-4 shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] h-28 flex flex-col items-center justify-center"
                     style={{
                       background: "linear-gradient(135deg, #F59E0B 0%, #FBBF24 50%, #FCD34D 100%)"
                     }}
                   >
-                    <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-2 shadow-sm">
-                      <ChartColumnBig className="w-5 h-5 text-amber-600" />
-                    </div>
+                    <img src={reportsIcon} alt="Reports" className="w-14 h-14 mb-2" />
                     <h3 className="text-xs font-semibold text-white text-center">Reports</h3>
                   </div>
                 </Link>
@@ -223,14 +222,12 @@ const Home = () => {
                 {/* About Us */}
                 <Link to="/about" className="group block">
                   <div 
-                    className="rounded-xl p-4 shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] h-24 flex flex-col items-center justify-center"
+                    className="rounded-xl p-4 shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] h-28 flex flex-col items-center justify-center"
                     style={{
                       background: "linear-gradient(135deg, #EC4899 0%, #F472B6 50%, #F9A8D4 100%)"
                     }}
                   >
-                    <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-2 shadow-sm">
-                      <InfoIcon className="w-5 h-5 text-pink-600" />
-                    </div>
+                    <img src={aboutUsIcon} alt="About Us" className="w-14 h-14 mb-2" />
                     <h3 className="text-xs font-semibold text-white text-center">About Us</h3>
                   </div>
                 </Link>
@@ -238,14 +235,12 @@ const Home = () => {
                 {/* Contact Us */}
                 <Link to="/contact" className="group block">
                   <div 
-                    className="rounded-xl p-4 shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] h-24 flex flex-col items-center justify-center"
+                    className="rounded-xl p-4 shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] h-28 flex flex-col items-center justify-center"
                     style={{
                       background: "linear-gradient(135deg, #14B8A6 0%, #2DD4BF 50%, #5EEAD4 100%)"
                     }}
                   >
-                    <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-2 shadow-sm">
-                      <Phone className="w-5 h-5 text-teal-600" />
-                    </div>
+                    <img src={contactUsIcon} alt="Contact Us" className="w-14 h-14 mb-2" />
                     <h3 className="text-xs font-semibold text-white text-center">Contact Us</h3>
                   </div>
                 </Link>
@@ -253,14 +248,12 @@ const Home = () => {
                 {/* Profile Settings */}
                 <Link to="/profile" className="group block">
                   <div 
-                    className="rounded-xl p-4 shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] h-24 flex flex-col items-center justify-center"
+                    className="rounded-xl p-4 shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] h-28 flex flex-col items-center justify-center"
                     style={{
                       background: "linear-gradient(135deg, #8B5CF6 0%, #A78BFA 50%, #C4B5FD 100%)"
                     }}
                   >
-                    <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center mb-2 shadow-sm">
-                      <Settings className="w-5 h-5 text-violet-600" />
-                    </div>
+                    <img src={settingsIcon} alt="Profile Settings" className="w-14 h-14 mb-2" />
                     <h3 className="text-xs font-semibold text-white text-center">Profile Settings</h3>
                   </div>
                 </Link>
