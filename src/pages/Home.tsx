@@ -5,6 +5,7 @@ import kaabaBannerGif from "@/assets/kaaba-banner.gif";
 import kaabaBannerFallback from "@/assets/kaaba-banner-fallback.png";
 import Header from "@/components/layout/Header";
 import BottomNav from "@/components/layout/BottomNav";
+import { getFaisalabadTime } from "@/lib/prayerUtils";
 
 // Prayer times for Pakistan (Faisalabad) - these would ideally come from an API
 const PRAYER_TIMES = [
@@ -76,12 +77,14 @@ const Home = () => {
   const [prayerInfo, setPrayerInfo] = useState(getCurrentPrayer());
   const [bannerLoading, setBannerLoading] = useState(true);
   const [bannerError, setBannerError] = useState(false);
+  const [faisalabadTime, setFaisalabadTime] = useState(getFaisalabadTime());
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(new Date());
       setPrayerInfo(getCurrentPrayer());
-    }, 60000);
+      setFaisalabadTime(getFaisalabadTime());
+    }, 1000);
 
     return () => clearInterval(timer);
   }, []);
@@ -91,6 +94,14 @@ const Home = () => {
     const period = hours >= 12 ? 'PM' : 'AM';
     const displayHours = hours % 12 || 12;
     return `${displayHours}:${minutes.toString().padStart(2, '0')} ${period}`;
+  };
+
+  const formatFaisalabadTime = (date: Date) => {
+    return date.toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+    });
   };
 
   return (
@@ -147,7 +158,7 @@ const Home = () => {
                   
                    <div className="text-right text-white flex-1">
                      <p className="text-white/60 text-[10px] uppercase tracking-wide">Faisalabad Time</p>
-                    <p className="text-xl font-bold font-display">{formatTime(prayerInfo.next.time)}</p>
+                    <p className="text-xl font-bold font-display">{formatFaisalabadTime(faisalabadTime)}</p>
                   </div>
                 </div>
               </div>

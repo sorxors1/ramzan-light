@@ -363,7 +363,12 @@ const CheckItem = ({
             checked ? "bg-primary" : "bg-accent"
           }`}
         >
-          <img src={iconSrc} alt={label} className="w-6 h-6" />
+          <img 
+            src={iconSrc} 
+            alt={label} 
+            className="w-9 h-9"
+            style={{ filter: checked ? "brightness(0) invert(1)" : "brightness(0) saturate(100%) invert(35%) sepia(85%) saturate(500%) hue-rotate(120deg)" }}
+          />
         </div>
         <div className="flex-1">
           <div className="flex items-center gap-2">
