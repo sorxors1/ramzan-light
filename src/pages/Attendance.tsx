@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import AppLayout from "@/components/layout/AppLayout";
 import FaisalabadClock from "@/components/FaisalabadClock";
-import { Sun, Sunset, Moon, ArrowLeft, Check, X, Lock } from "lucide-react";
+import { Sun, Sunset, Moon, ArrowLeft, Check, X, Lock, FlaskConical } from "lucide-react";
 import { useTodayTiming } from "@/hooks/usePrayerTimings";
 import { useTodayAttendance } from "@/hooks/usePrayerAttendance";
 import { useAuth } from "@/hooks/useAuth";
@@ -24,12 +24,14 @@ interface Prayer {
   icon: typeof Sun;
   time: string;
   backgroundImage: string;
+  isTest?: boolean;
 }
 
 const prayers: Prayer[] = [
   { id: "fajr", name: "Fajr", nameUrdu: "فجر", icon: Sun, time: "Dawn Prayer", backgroundImage: fajrBg },
   { id: "zoharain", name: "Zoharain", nameUrdu: "ظہرین", icon: Sunset, time: "Noon & Afternoon", backgroundImage: zoharainBg },
   { id: "magribain", name: "Magribain", nameUrdu: "مغربین", icon: Moon, time: "Evening & Night", backgroundImage: magribainBg },
+  { id: "test", name: "Test Prayer", nameUrdu: "ٹیسٹ", icon: FlaskConical, time: "Always Open (Testing)", backgroundImage: zoharainBg, isTest: true },
 ];
 
 const Attendance = () => {
