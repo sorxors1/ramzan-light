@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import AppLayout from "@/components/layout/AppLayout";
 import FaisalabadClock from "@/components/FaisalabadClock";
 import FeedbackDialog from "@/components/FeedbackDialog";
-import { ArrowLeft, Check, BookOpen, Heart, BookMarked, Sparkles, HandHeart } from "lucide-react";
+import { ArrowLeft, Check, Sparkles, HandHeart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
@@ -21,6 +21,9 @@ import {
   sessionNames,
   FeedbackMessage,
 } from "@/lib/prayerUtils";
+import namazIcon from "@/assets/namaz-icon.svg";
+import quranIcon from "@/assets/quran-icon.svg";
+import duaIcon from "@/assets/dua-icon.svg";
 
 const PrayerDetail = () => {
   const { prayerId } = useParams<{ prayerId: string }>();
@@ -223,7 +226,7 @@ const PrayerDetail = () => {
             labelUrdu="نماز"
             description="Offered prayer with congregation"
             descriptionUrdu="جماعت کے ساتھ نماز ادا کی"
-            icon={Heart}
+            iconSrc={namazIcon}
             checked={namazChecked}
             onChange={setNamazChecked}
             required
@@ -237,7 +240,7 @@ const PrayerDetail = () => {
             labelUrdu="دعا"
             description="Made supplications after prayer"
             descriptionUrdu="نماز کے بعد دعائیں کیں"
-            icon={BookMarked}
+            iconSrc={duaIcon}
             checked={duaChecked}
             onChange={setDuaChecked}
             disabled={isLocked || existingAttendance?.namaz_marked}
@@ -250,7 +253,7 @@ const PrayerDetail = () => {
             labelUrdu="قرآن"
             description="Recited Quran today"
             descriptionUrdu="آج قرآن کی تلاوت کی"
-            icon={BookOpen}
+            iconSrc={quranIcon}
             checked={quranChecked}
             onChange={setQuranChecked}
             disabled={isLocked || existingAttendance?.namaz_marked}
@@ -326,7 +329,7 @@ interface CheckItemProps {
   labelUrdu: string;
   description: string;
   descriptionUrdu: string;
-  icon: typeof Heart;
+  iconSrc: string;
   checked: boolean;
   onChange: (checked: boolean) => void;
   required?: boolean;
@@ -339,7 +342,7 @@ const CheckItem = ({
   labelUrdu,
   description,
   descriptionUrdu,
-  icon: Icon,
+  iconSrc,
   checked,
   onChange,
   required,
@@ -360,7 +363,7 @@ const CheckItem = ({
             checked ? "bg-primary" : "bg-accent"
           }`}
         >
-          <Icon className={`w-6 h-6 ${checked ? "text-primary-foreground" : "text-primary"}`} />
+          <img src={iconSrc} alt={label} className="w-6 h-6" />
         </div>
         <div className="flex-1">
           <div className="flex items-center gap-2">
