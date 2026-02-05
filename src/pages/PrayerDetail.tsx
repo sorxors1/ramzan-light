@@ -155,7 +155,7 @@ const PrayerDetail = () => {
             </Link>
           </div>
           <h1 className="text-2xl font-display font-bold text-foreground text-center">
-            {sessionName.en} <span className="font-urdu text-muted-foreground">{sessionName.ur}</span>
+            {sessionName.en} <span className="font-urdu text-muted-foreground ml-3">{sessionName.ur}</span>
           </h1>
         </div>
 
