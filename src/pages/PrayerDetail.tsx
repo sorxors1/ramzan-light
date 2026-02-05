@@ -95,12 +95,12 @@ const PrayerDetail = () => {
       return;
     }
 
-    if (!todayTiming || !prayerId) {
+    if (!isTestPrayer && (!todayTiming || !prayerId)) {
       toast.error("Unable to save attendance");
       return;
     }
 
-    if (isLocked) {
+    if (!isTestPrayer && isLocked) {
       toast.error("This prayer session has ended");
       return;
     }
