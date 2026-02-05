@@ -221,7 +221,7 @@ const PrayerCard = ({
       />
 
       {/* Dark Overlay */}
-      <div className={`absolute inset-0 ${locked ? "bg-black/70" : "bg-black/50"}`} />
+      <div className={`absolute inset-0 ${locked ? "bg-black/50" : "bg-black/30"} backdrop-blur-[1px]`} />
 
       {/* Lock Overlay */}
       {(locked || (marked && !active)) && (
