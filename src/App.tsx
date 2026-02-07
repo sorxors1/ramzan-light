@@ -16,6 +16,7 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
+import DisqualificationOverlay from "./components/DisqualificationOverlay";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <DisqualificationOverlay />
         <Routes>
           <Route path="/" element={<Splash />} />
           <Route path="/login" element={<Login />} />
