@@ -10,16 +10,8 @@ import reportsIcon from "@/assets/reports-icon.svg";
 import aboutUsIcon from "@/assets/about-us-icon.svg";
 import contactUsIcon from "@/assets/contact-us-icon.svg";
 import settingsIcon from "@/assets/settings-icon.svg";
-import { getFaisalabadTime } from "@/lib/prayerUtils";
-
-// Prayer times for Pakistan (Faisalabad) - these would ideally come from an API
-const PRAYER_TIMES = [
-  { name: "Fajr", time: "05:15" },
-  { name: "Dhuhr", time: "12:30" },
-  { name: "Asr", time: "15:45" },
-  { name: "Maghrib", time: "18:15" },
-  { name: "Isha", time: "19:45" },
-];
+import { getFaisalabadTime, getSessionWindows, sessionNames } from "@/lib/prayerUtils";
+import { useTodayTiming } from "@/hooks/usePrayerTimings";
 
 // Faisalabad Ramadan 2026 Calendar Data
 const RAMADAN_2026_FAISALABAD = [
@@ -55,51 +47,44 @@ const RAMADAN_2026_FAISALABAD = [
   { day: 30, date: "18 Mar", sehri: "05:01", iftar: "18:29" },
 ];
 
-const getCurrentPrayer = () => {
-  const now = new Date();
-  const currentTime = now.getHours() * 60 + now.getMinutes();
-  
-  for (let i = PRAYER_TIMES.length - 1; i >= 0; i--) {
-    const [hours, minutes] = PRAYER_TIMES[i].time.split(':').map(Number);
-    const prayerTime = hours * 60 + minutes;
-    if (currentTime >= prayerTime) {
-      const nextPrayer = PRAYER_TIMES[(i + 1) % PRAYER_TIMES.length];
-      return {
-        current: PRAYER_TIMES[i],
-        next: nextPrayer,
-      };
-    }
-  }
-  
-  return {
-    current: PRAYER_TIMES[PRAYER_TIMES.length - 1],
-    next: PRAYER_TIMES[0],
-  };
-};
+
 
 const Home = () => {
-  const [currentTime, setCurrentTime] = useState(new Date());
-  const [prayerInfo, setPrayerInfo] = useState(getCurrentPrayer());
   const [bannerLoading, setBannerLoading] = useState(true);
   const [bannerError, setBannerError] = useState(false);
   const [faisalabadTime, setFaisalabadTime] = useState(getFaisalabadTime());
+  const [nextPrayerName, setNextPrayerName] = useState("...");
+  const { data: todayTiming } = useTodayTiming();
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-      setPrayerInfo(getCurrentPrayer());
-      setFaisalabadTime(getFaisalabadTime());
-    }, 1000);
+    const updateNextPrayer = () => {
+      const now = getFaisalabadTime();
+      setFaisalabadTime(now);
 
+      if (!todayTiming) {
+        setNextPrayerName("...");
+        return;
+      }
+
+      const windows = getSessionWindows(todayTiming, now);
+      const sessions = ["fajr", "zoharain", "magribain"] as const;
+
+      // Find the next upcoming or currently active session
+      for (const s of sessions) {
+        const w = windows[s];
+        if (w && !w.isPast) {
+          setNextPrayerName(sessionNames[s]?.en || s);
+          return;
+        }
+      }
+      // All sessions past - next is tomorrow's Fajr
+      setNextPrayerName("Fajr (Tomorrow)");
+    };
+
+    updateNextPrayer();
+    const timer = setInterval(updateNextPrayer, 1000);
     return () => clearInterval(timer);
-  }, []);
-
-  const formatTime = (time: string) => {
-    const [hours, minutes] = time.split(':').map(Number);
-    const period = hours >= 12 ? 'PM' : 'AM';
-    const displayHours = hours % 12 || 12;
-    return `${displayHours}:${minutes.toString().padStart(2, '0')} ${period}`;
-  };
+  }, [todayTiming]);
 
   const formatFaisalabadTime = (date: Date) => {
     return date.toLocaleTimeString('en-US', {
@@ -156,7 +141,7 @@ const Home = () => {
                 <div className="flex items-center justify-between">
                   <div className="text-white flex-1">
                     <p className="text-white/60 text-[10px] uppercase tracking-wide">Next Prayer</p>
-                    <h2 className="text-xl font-bold font-display">{prayerInfo.next.name}</h2>
+                    <h2 className="text-xl font-bold font-display">{nextPrayerName}</h2>
                   </div>
                   
                   <div className="w-px h-10 bg-white/30 mx-4" />
