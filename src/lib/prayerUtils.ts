@@ -175,6 +175,6 @@ export const sessionNames: Record<string, { en: string; ur: string }> = {
 // Status labels
 export const statusLabels = {
   ada: { en: 'Namaz Ada', ur: 'نماز ادا' },
-  kaza: { en: 'Namaz Kaza', ur: 'نماز قضا' },
+  kaza: { en: 'Namaz Qaza', ur: 'نماز قضا' },
   pending: { en: 'Pending', ur: 'زیر التوا' },
 };

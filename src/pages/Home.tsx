@@ -195,7 +195,7 @@ const Home = () => {
                   </div>
                 </Link>
 
-                {/* Kaza Namaz */}
+                {/* Qaza Namaz */}
                 <Link to="/kaza" className="group block">
                   <div 
                     className="rounded-xl p-4 shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] h-28 flex flex-col items-center justify-center"
@@ -204,9 +204,9 @@ const Home = () => {
                     }}
                   >
                     <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center mb-2">
-                      <img src={kazaNamazIcon} alt="Kaza Namaz" className="w-10 h-10" />
+                      <img src={kazaNamazIcon} alt="Qaza Namaz" className="w-10 h-10" />
                     </div>
-                    <h3 className="text-xs font-semibold text-white text-center">Kaza Namaz</h3>
+                    <h3 className="text-xs font-semibold text-white text-center">Qaza Namaz</h3>
                   </div>
                 </Link>
 
