@@ -26,28 +26,24 @@ const About = () => {
           
           <div className="space-y-4 text-foreground/85 leading-relaxed">
             <p>
-              KYF Prayer Log is your dedicated spiritual companion designed to help you make the most 
-              of the blessed month of Ramadan. Our mission is to support every Muslim in 
-              maintaining their prayer obligations and spiritual practices during this sacred time.
+              Khawajagan Youth Forum (KYF) is a youth development platform working for the moral and spiritual upbringing of youngsters. It is a project of Markaz Umoor-e-Islami (regd) Fsd and is dedicated to promote Islamic values and character building of our community youngsters.
             </p>
             
             <p>
-              We understand the importance of consistency in worship. That's why we've created 
-              an intuitive, easy-to-use application that helps you track your daily prayers, 
-              supplications (Dua), and Quran recitation with minimal effort.
+              This Ramadan Prayer Log App has been created to help children
+            </p>
+
+            <ul className="list-disc list-inside pl-2 space-y-1">
+              <li>Girls (6–10 years) and</li>
+              <li>Boys (9–13 years)</li>
+            </ul>
+
+            <p>
+              develop the habit of offering all prayers on time and track their progress throughout the blessed month.
             </p>
             
             <p>
-              Developed by KYF Faisalabad, this app is designed with love and care by a team of 
-              dedicated Muslims who understand the challenges of maintaining spiritual routines 
-              in today's busy world. We believe technology can be a powerful tool for spiritual 
-              growth when used mindfully.
-            </p>
-            
-            <p>
-              Whether you're trying to improve your prayer consistency, track your Kaza prayers, 
-              or simply want a gentle reminder to stay connected with your faith, KYF Prayer Log 
-              is here to support you every step of the way.
+              After Ramadan, a Prize Distribution Ceremony will be organised to recognize and reward those children who successfully complete their prayer log with punctuality and dedication, encouraging them to continue this beautiful habit for life.
             </p>
             
             <div className="pt-4 border-t border-border">

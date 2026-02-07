@@ -11,16 +11,22 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-const contacts = [
+const contactGroups = [
   {
-    name: "Support Team",
-    number: "+1 234 567 8900",
-    whatsappLink: "https://wa.me/12345678900",
+    title: "Support Team",
+    contacts: [
+      { name: "Ali Asghar", number: "+92 322 0000759", whatsappLink: "https://wa.me/923220000759" },
+      { name: "M. Ali Chawla", number: "+92 321 8666068", whatsappLink: "https://wa.me/923218666068" },
+    ],
   },
   {
-    name: "Community Manager",
-    number: "+1 234 567 8901",
-    whatsappLink: "https://wa.me/12345678901",
+    title: "Community Managers",
+    contacts: [
+      { name: "Amir Raza", number: "+92 300 7937514", whatsappLink: "https://wa.me/923007937514" },
+      { name: "Asad Ali", number: "+92 322 6067689", whatsappLink: "https://wa.me/923226067689" },
+      { name: "Ali Abbas", number: "+92 344 2255552", whatsappLink: "https://wa.me/923442255552" },
+      { name: "Ali Raza", number: "+92 321 5665555", whatsappLink: "https://wa.me/923215665555" },
+    ],
   },
 ];
 
@@ -35,35 +41,35 @@ const Contact = () => {
           Reach out to us on WhatsApp for support
         </p>
 
-        <div className="grid gap-4">
-          {contacts.map((contact, index) => (
-            <a
-              key={contact.number}
-              href={contact.whatsappLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block animate-slide-up"
-              style={{ animationDelay: `${index * 100}ms` }}
-            >
-              <div className="bg-card rounded-2xl p-6 prayer-card-shadow transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 rounded-full bg-[#25D366] flex items-center justify-center shadow-lg">
-                    <WhatsAppIcon className="w-8 h-8 text-white" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-foreground">
-                      {contact.name}
-                    </h3>
-                    <p className="text-muted-foreground text-sm mt-1">
-                      {contact.number}
-                    </p>
-                    <span className="inline-block mt-2 text-xs font-medium text-primary bg-accent px-3 py-1 rounded-full">
-                      Tap to Chat on WhatsApp
-                    </span>
-                  </div>
-                </div>
+        <div className="space-y-6">
+          {contactGroups.map((group) => (
+            <div key={group.title}>
+              <h2 className="text-lg font-display font-semibold text-foreground mb-3">{group.title}</h2>
+              <div className="grid gap-3">
+                {group.contacts.map((contact, index) => (
+                  <a
+                    key={contact.number}
+                    href={contact.whatsappLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block animate-slide-up"
+                    style={{ animationDelay: `${index * 80}ms` }}
+                  >
+                    <div className="bg-card rounded-2xl p-4 prayer-card-shadow transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-full bg-[#25D366] flex items-center justify-center shadow-lg shrink-0">
+                          <WhatsAppIcon className="w-6 h-6 text-white" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="text-base font-semibold text-foreground">{contact.name}</h3>
+                          <p className="text-muted-foreground text-sm">{contact.number}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                ))}
               </div>
-            </a>
+            </div>
           ))}
         </div>
       </div>
