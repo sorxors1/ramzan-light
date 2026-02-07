@@ -90,7 +90,7 @@ const Kaza = () => {
     <AppLayout>
       <div className="px-4 py-6 animate-fade-in">
         <h1 className="text-2xl font-display font-bold text-foreground mb-2">
-          Kaza Prayer | قضا نماز
+          Qaza Prayer | قضا نماز
         </h1>
         <p className="text-muted-foreground text-sm mb-6">
           Record reason for missed prayers | چھوٹی ہوئی نمازوں کی وجہ درج کریں
@@ -102,7 +102,7 @@ const Kaza = () => {
               <AlertCircle className="h-8 w-8 text-primary" />
             </div>
             <h2 className="text-lg font-semibold text-foreground mb-2">
-              No Missed Prayers | کوئی قضا نماز نہیں
+             No Missed Prayers | کوئی قضا نماز نہیں
             </h2>
             <p className="text-muted-foreground text-sm">
               MashaAllah! You have marked all your prayers on time.
@@ -188,7 +188,7 @@ const Kaza = () => {
               className="w-full h-14 text-lg font-semibold rounded-xl bg-secondary hover:bg-secondary/90 btn-shadow animate-slide-up disabled:opacity-50"
               style={{ animationDelay: "200ms" }}
             >
-              Save Kaza Record | قضا درج کریں
+              Save Qaza Record | قضا درج کریں
             </Button>
 
             {/* Info Section */}
