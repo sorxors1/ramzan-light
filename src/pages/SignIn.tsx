@@ -88,6 +88,12 @@ const SignIn = () => {
           </Button>
         </form>
         
+        <Link
+          to="/admin/login"
+          className="block text-center text-xs text-muted-foreground hover:text-foreground mt-8 underline underline-offset-4"
+        >
+          Login as Administrator
+        </Link>
       </div>
     </div>
   );

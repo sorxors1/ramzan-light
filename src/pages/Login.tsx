@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
@@ -96,6 +96,9 @@ const Login = () => {
       <div className="text-center text-white/60 text-sm">
         <p>KYC Prayer Log</p>
         <p className="text-xs mt-1">Version 1.0.0</p>
+        <Link to="/admin/login" className="block text-xs mt-3 text-white/40 underline underline-offset-4 hover:text-white/70">
+          Login as Administrator
+        </Link>
       </div>
     </div>
   );
