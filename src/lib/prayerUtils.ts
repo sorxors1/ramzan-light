@@ -93,7 +93,11 @@ export const getSessionWindows = (
   
   // Magribain: from maghrib_start to isha_end (Maghrib + Isha combined window)
   const magribainStart = parseTimeToDate(timing.maghrib_start, dateStr);
-  const magribainEnd = parseTimeToDate(timing.isha_end, dateStr);
+  let magribainEnd = parseTimeToDate(timing.isha_end, dateStr);
+  // If isha_end is midnight (00:00), it means end of day — push to next day's midnight
+  if (magribainEnd <= magribainStart) {
+    magribainEnd = new Date(magribainEnd.getTime() + 24 * 60 * 60 * 1000);
+  }
 
   const getSessionStatus = (start: Date, end: Date): SessionWindow => {
     const isActive = currentTime >= start && currentTime <= end;
