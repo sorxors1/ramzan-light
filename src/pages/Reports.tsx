@@ -3,12 +3,14 @@ import AppLayout from "@/components/layout/AppLayout";
 import { useAuth } from "@/hooks/useAuth";
 import { useAllAttendance } from "@/hooks/usePrayerAttendance";
 import { usePrayerTimings } from "@/hooks/usePrayerTimings";
-import { ArrowLeft, CheckCircle, XCircle, Clock, BookOpen, Heart, Sparkles } from "lucide-react";
+import { useQazaRecords } from "@/hooks/useQazaRecords";
+import { ArrowLeft, CheckCircle, XCircle, Clock, BookOpen, Heart, Sparkles, BookMarked } from "lucide-react";
 
 const Reports = () => {
   const { user, isAuthenticated } = useAuth();
   const { data: attendance = [] } = useAllAttendance(user?.id);
   const { data: timings = [] } = usePrayerTimings();
+  const { data: qazaRecords = [] } = useQazaRecords(user?.id);
 
   // Calculate statistics
   const totalPossiblePrayers = timings.length * 3; // 3 sessions per day
