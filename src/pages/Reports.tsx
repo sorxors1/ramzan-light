@@ -3,12 +3,14 @@ import AppLayout from "@/components/layout/AppLayout";
 import { useAuth } from "@/hooks/useAuth";
 import { useAllAttendance } from "@/hooks/usePrayerAttendance";
 import { usePrayerTimings } from "@/hooks/usePrayerTimings";
-import { ArrowLeft, CheckCircle, XCircle, Clock, BookOpen, Heart, Sparkles } from "lucide-react";
+import { useQazaRecords } from "@/hooks/useQazaRecords";
+import { ArrowLeft, CheckCircle, XCircle, Clock, BookOpen, Heart, Sparkles, BookMarked } from "lucide-react";
 
 const Reports = () => {
   const { user, isAuthenticated } = useAuth();
   const { data: attendance = [] } = useAllAttendance(user?.id);
   const { data: timings = [] } = usePrayerTimings();
+  const { data: qazaRecords = [] } = useQazaRecords(user?.id);
 
   // Calculate statistics
   const totalPossiblePrayers = timings.length * 3; // 3 sessions per day
@@ -85,6 +87,7 @@ const Reports = () => {
   const detailedStats = [
     { label: "Completed On Time", labelUrdu: "وقت پر مکمل", value: completedPrayers, unit: "prayers", icon: CheckCircle, color: "text-primary" },
     { label: "Qaza Prayers", labelUrdu: "قضا نمازیں", value: kazaPrayers, unit: "missed", icon: XCircle, color: "text-destructive" },
+    { label: "Qaza Marked", labelUrdu: "ادا شدہ قضا", value: qazaRecords.length, unit: "marked", icon: BookMarked, color: "text-secondary" },
     { label: "Current Streak", labelUrdu: "موجودہ سلسلہ", value: streak, unit: "days", icon: Clock, color: "text-secondary" },
   ];
 

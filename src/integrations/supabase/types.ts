@@ -140,6 +140,36 @@ export type Database = {
         }
         Relationships: []
       }
+      qaza_records: {
+        Row: {
+          created_at: string
+          date: string
+          id: string
+          marked_at: string
+          reason: string
+          session_type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          id?: string
+          marked_at?: string
+          reason: string
+          session_type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          id?: string
+          marked_at?: string
+          reason?: string
+          session_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
