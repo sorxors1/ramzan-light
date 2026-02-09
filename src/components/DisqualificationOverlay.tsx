@@ -1,15 +1,17 @@
 import { useAuth } from "@/hooks/useAuth";
 import { useDisqualification } from "@/hooks/useDisqualification";
+import { useAdmin } from "@/hooks/useAdmin";
 import { Button } from "@/components/ui/button";
 import { LogOut, ShieldAlert } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const DisqualificationOverlay = () => {
   const { user, isAuthenticated, signOut } = useAuth();
+  const { isAdmin, loading: adminLoading } = useAdmin();
   const { data: isDisqualified } = useDisqualification(user?.id);
   const navigate = useNavigate();
 
-  if (!isAuthenticated || !isDisqualified) return null;
+  if (!isAuthenticated || adminLoading || isAdmin || !isDisqualified) return null;
 
   const handleLogout = async () => {
     await signOut();
