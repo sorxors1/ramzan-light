@@ -23,10 +23,18 @@ const SignIn = () => {
 
     setLoading(true);
     try {
-      const { error } = await signIn(email, password);
+      const { data, error } = await signIn(email, password);
       if (error) {
         toast.error(error.message);
       } else {
+        // Set first_login_at if not already set
+        if (data?.user) {
+          await supabase
+            .from("profiles")
+            .update({ first_login_at: new Date().toISOString() })
+            .eq("user_id", data.user.id)
+            .is("first_login_at", null);
+        }
         toast.success("Welcome back!");
         navigate("/home");
       }
