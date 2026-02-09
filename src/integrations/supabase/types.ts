@@ -111,6 +111,7 @@ export type Database = {
           created_at: string
           display_name: string | null
           father_name: string | null
+          first_login_at: string | null
           id: string
           updated_at: string
           user_id: string
@@ -121,6 +122,7 @@ export type Database = {
           created_at?: string
           display_name?: string | null
           father_name?: string | null
+          first_login_at?: string | null
           id?: string
           updated_at?: string
           user_id: string
@@ -131,6 +133,7 @@ export type Database = {
           created_at?: string
           display_name?: string | null
           father_name?: string | null
+          first_login_at?: string | null
           id?: string
           updated_at?: string
           user_id?: string
