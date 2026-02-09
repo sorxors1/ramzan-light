@@ -18,23 +18,33 @@ const sessionNames: Record<string, { en: string; ur: string }> = {
   magribain: { en: 'Magribain', ur: 'مغربین' },
 };
 
-// System start date - Feb 7, 2026
-const SYSTEM_START_DATE = '2026-02-07';
-
 export const useMissedPrayers = (userId: string | undefined) => {
   return useQuery({
     queryKey: ["missed-prayers", userId],
     queryFn: async (): Promise<MissedPrayersByDate> => {
       if (!userId) return {};
 
+      // Get user's first_login_at from profile
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("first_login_at")
+        .eq("user_id", userId)
+        .single();
+
+      // If user has never logged in, no missed prayers
+      if (!profile?.first_login_at) return {};
+
+      const firstLoginDate = new Date(profile.first_login_at);
+      const startDate = firstLoginDate.toISOString().split('T')[0];
+
       const currentFaisalabadTime = getFaisalabadTime();
       const todayDateString = getFaisalabadDateString();
 
-      // Get all prayer timings from system start to today
+      // Get all prayer timings from user's first login to today
       const { data: timings, error: timingsError } = await supabase
         .from("prayer_timings")
         .select("*")
-        .gte("date", SYSTEM_START_DATE)
+        .gte("date", startDate)
         .lte("date", todayDateString)
         .order("date", { ascending: true });
 
@@ -45,19 +55,29 @@ export const useMissedPrayers = (userId: string | undefined) => {
         .from("prayer_attendance")
         .select("*")
         .eq("user_id", userId)
-        .gte("date", SYSTEM_START_DATE)
+        .gte("date", startDate)
         .lte("date", todayDateString);
 
       if (attendanceError) throw attendanceError;
 
-      // Create a set of marked prayers for quick lookup
+      // Get already-marked qaza records to exclude them
+      const { data: qazaRecords, error: qazaError } = await supabase
+        .from("qaza_records")
+        .select("date, session_type")
+        .eq("user_id", userId);
+
+      if (qazaError) throw qazaError;
+
+      // Create sets for quick lookup
       const markedPrayers = new Set(
         (attendance || []).map(a => `${a.date}-${a.session_type}`)
+      );
+      const markedQaza = new Set(
+        (qazaRecords || []).map(q => `${q.date}-${q.session_type}`)
       );
 
       const missedByDate: MissedPrayersByDate = {};
 
-      // Check each day's prayer timings
       for (const timing of timings || []) {
         const dateStr = timing.date;
         const sessions = getSessionWindows(timing as PrayerTiming, currentFaisalabadTime);
@@ -65,12 +85,10 @@ export const useMissedPrayers = (userId: string | undefined) => {
         for (const [sessionType, window] of Object.entries(sessions)) {
           const key = `${dateStr}-${sessionType}`;
           
-          // Check if this session's window has passed and was not marked
           const isToday = dateStr === todayDateString;
           const sessionHasPassed = isToday ? window.isPast : true;
 
-          if (sessionHasPassed && !markedPrayers.has(key)) {
-            // For today, only include sessions that have actually ended
+          if (sessionHasPassed && !markedPrayers.has(key) && !markedQaza.has(key)) {
             if (isToday && !window.isPast) continue;
 
             if (!missedByDate[dateStr]) {
