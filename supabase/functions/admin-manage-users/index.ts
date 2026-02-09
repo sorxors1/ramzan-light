@@ -68,7 +68,9 @@ Deno.serve(async (req) => {
         );
       }
 
-      // Create user with service role (auto-confirms)
+      // Try to create user; if already exists, update their password instead
+      let userId: string;
+
       const { data: newUser, error: createError } = await serviceClient.auth.admin.createUser({
         email,
         password,
@@ -76,25 +78,45 @@ Deno.serve(async (req) => {
       });
 
       if (createError) {
-        return new Response(JSON.stringify({ error: createError.message }), {
-          status: 400,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
+        // Check if user already exists
+        if (createError.message.includes("already been registered")) {
+          // Find existing user and update password
+          const { data: authUsers } = await serviceClient.auth.admin.listUsers({ perPage: 1000 });
+          const existingUser = authUsers?.users?.find((u) => u.email === email);
+          if (!existingUser) {
+            return new Response(JSON.stringify({ error: "User exists but could not be found" }), {
+              status: 400,
+              headers: { ...corsHeaders, "Content-Type": "application/json" },
+            });
+          }
+          userId = existingUser.id;
+          // Update password
+          await serviceClient.auth.admin.updateUserById(userId, { password });
+        } else {
+          return new Response(JSON.stringify({ error: createError.message }), {
+            status: 400,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
+      } else {
+        userId = newUser.user.id;
       }
 
-      // Update profile with additional info
+      // Upsert profile with additional info
       await serviceClient
         .from("profiles")
-        .update({ display_name, father_name, cnic: cnic || null, address: address || null })
-        .eq("user_id", newUser.user.id);
+        .upsert(
+          { user_id: userId, display_name, father_name, cnic: cnic || null, address: address || null },
+          { onConflict: "user_id" }
+        );
 
-      // Assign user role
+      // Upsert user role
       await serviceClient
         .from("user_roles")
-        .insert({ user_id: newUser.user.id, role: "user" });
+        .upsert({ user_id: userId, role: "user" }, { onConflict: "user_id,role" });
 
       return new Response(
-        JSON.stringify({ success: true, user_id: newUser.user.id, email, password }),
+        JSON.stringify({ success: true, user_id: userId, email, password }),
         { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
