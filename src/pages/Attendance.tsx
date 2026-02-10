@@ -24,14 +24,12 @@ interface Prayer {
   icon: typeof Sun;
   time: string;
   backgroundImage: string;
-  isTest?: boolean;
 }
 
 const prayers: Prayer[] = [
   { id: "fajr", name: "Fajr", nameUrdu: "فجر", icon: Sun, time: "Dawn Prayer", backgroundImage: fajrBg },
   { id: "zoharain", name: "Zoharain", nameUrdu: "ظہرین", icon: Sunset, time: "Noon & Afternoon", backgroundImage: zoharainBg },
   { id: "magribain", name: "Magribain", nameUrdu: "مغربین", icon: Moon, time: "Evening & Night", backgroundImage: magribainBg },
-  { id: "test", name: "Test Prayer", nameUrdu: "ٹیسٹ", icon: FlaskConical, time: "Always Open (Testing)", backgroundImage: zoharainBg, isTest: true },
 ];
 
 const Attendance = () => {
