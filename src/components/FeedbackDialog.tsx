@@ -23,7 +23,7 @@ const FeedbackDialog = ({ open, onClose, feedback, sessionName }: FeedbackDialog
         <DialogHeader>
           <div className="flex justify-center mb-4">
             <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center animate-scale-in">
-              {feedback.title === 'Shabash!' ? (
+              {feedback.title === 'Awal Waqt!' ? (
                 <Star className="w-10 h-10 text-white fill-white" />
               ) : (
                 <CheckCircle className="w-10 h-10 text-white" />

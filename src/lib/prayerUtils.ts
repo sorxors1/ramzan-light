@@ -146,24 +146,24 @@ export const getFeedbackMessage = (tier: FeedbackTier): FeedbackMessage => {
   switch (tier) {
     case 'early':
       return {
-        title: 'Shabash!',
-        titleUrdu: 'شاباش!',
-        message: 'Excellent! You have prayed on time. May Allah accept your prayers.',
-        messageUrdu: 'بہت خوب! آپ نے وقت پر نماز پڑھی۔ اللہ آپ کی نمازیں قبول فرمائے۔',
+        title: 'Awal Waqt!',
+        titleUrdu: 'اول وقت!',
+        message: 'Excellent! You have prayed in the first time of prayer. May Allah accept your prayers.',
+        messageUrdu: 'بہت خوب! آپ نے اول وقت میں نماز پڑھی۔ اللہ آپ کی نمازیں قبول فرمائے۔',
       };
     case 'middle':
       return {
-        title: 'Subhan Allah',
-        titleUrdu: 'سبحان اللہ',
-        message: 'Good! You have offered your prayer. May Allah bless you.',
-        messageUrdu: 'اچھا ہے! آپ نے نماز ادا کی۔ اللہ آپ کو برکت دے۔',
+        title: 'Shabash!',
+        titleUrdu: 'شاباش!',
+        message: 'Good work! You have offered your prayer. May Allah bless you.',
+        messageUrdu: 'شاباش! آپ نے نماز ادا کی۔ اللہ آپ کو برکت دے۔',
       };
     case 'late':
       return {
-        title: 'Subhan Allah',
-        titleUrdu: 'سبحان اللہ',
-        message: 'You prayed at the last moment. Please try to pray on time next time.',
-        messageUrdu: 'آپ نے آخری وقت میں نماز پڑھی۔ براہ کرم اگلی بار وقت پر نماز ادا کرنے کی کوشش کریں۔',
+        title: 'Masha Allah',
+        titleUrdu: 'ماشاءاللہ',
+        message: 'Masha Allah, you have read the Namaz, but try to read it as early as possible.',
+        messageUrdu: 'ماشاءاللہ، آپ نے نماز پڑھی، لیکن جلد از جلد پڑھنے کی کوشش کریں۔',
       };
   }
 };

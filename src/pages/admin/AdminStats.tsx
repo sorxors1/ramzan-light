@@ -8,13 +8,14 @@ interface UserStat {
   user_id: string;
   display_name: string;
   father_name: string | null;
-  totalAttendance: number;
-  totalNamaz: number;
-  totalDua: number;
-  totalQuran: number;
-  totalExtraZiker: number;
-  totalGoodDeed: number;
-  score: number;
+  earlyNamazPoints: number;
+  middleNamazPoints: number;
+  lateNamazPoints: number;
+  duaPoints: number;
+  quranPoints: number;
+  dhikrPoints: number;
+  goodDeedPoints: number;
+  totalPoints: number;
 }
 
 const AdminStats = () => {
@@ -36,38 +37,59 @@ const AdminStats = () => {
             user_id: p.user_id,
             display_name: p.display_name || "Unknown",
             father_name: p.father_name,
-            totalAttendance: 0,
-            totalNamaz: 0,
-            totalDua: 0,
-            totalQuran: 0,
-            totalExtraZiker: 0,
-            totalGoodDeed: 0,
-            score: 0,
+            earlyNamazPoints: 0,
+            middleNamazPoints: 0,
+            lateNamazPoints: 0,
+            duaPoints: 0,
+            quranPoints: 0,
+            dhikrPoints: 0,
+            goodDeedPoints: 0,
+            totalPoints: 0,
           });
         });
 
         attendance.forEach((a: any) => {
           const stat = statsMap.get(a.user_id);
           if (!stat) return;
-          stat.totalAttendance++;
-          if (a.namaz_marked) stat.totalNamaz++;
-          if (a.dua_marked) stat.totalDua++;
-          if (a.quran_marked) stat.totalQuran++;
-          if (a.extra_ziker && a.extra_ziker.trim()) stat.totalExtraZiker++;
-          if (a.good_deed && a.good_deed.trim()) stat.totalGoodDeed++;
+
+          // Namaz points based on time_percentage
+          if (a.namaz_marked) {
+            const tp = a.time_percentage ?? 50;
+            if (tp <= 33.33) {
+              stat.earlyNamazPoints += 3;
+            } else if (tp <= 66.66) {
+              stat.middleNamazPoints += 2;
+            } else {
+              stat.lateNamazPoints += 1;
+            }
+          }
+
+          // Dua: 1 point
+          if (a.dua_marked) stat.duaPoints += 1;
+
+          // Quran: 1 point
+          if (a.quran_marked) stat.quranPoints += 1;
+
+          // Dhikr: 0.5 points
+          if (a.extra_ziker && a.extra_ziker.trim()) stat.dhikrPoints += 0.5;
+
+          // Good Deed: 0.5 points
+          if (a.good_deed && a.good_deed.trim()) stat.goodDeedPoints += 0.5;
         });
 
-        // Calculate score: weighted sum
+        // Calculate total
         statsMap.forEach((stat) => {
-          stat.score =
-            stat.totalNamaz * 3 +
-            stat.totalDua * 2 +
-            stat.totalQuran * 2 +
-            stat.totalExtraZiker * 1 +
-            stat.totalGoodDeed * 1;
+          stat.totalPoints =
+            stat.earlyNamazPoints +
+            stat.middleNamazPoints +
+            stat.lateNamazPoints +
+            stat.duaPoints +
+            stat.quranPoints +
+            stat.dhikrPoints +
+            stat.goodDeedPoints;
         });
 
-        const sorted = Array.from(statsMap.values()).sort((a, b) => b.score - a.score);
+        const sorted = Array.from(statsMap.values()).sort((a, b) => b.totalPoints - a.totalPoints);
         setUserStats(sorted);
       } catch (err: any) {
         toast.error(err.message);
@@ -89,7 +111,7 @@ const AdminStats = () => {
     <AdminLayout title="Stats">
       <div className="animate-fade-in">
         <h1 className="text-xl font-bold text-foreground mb-1">Student Rankings</h1>
-        <p className="text-xs text-muted-foreground mb-4">Ranked by overall engagement score</p>
+        <p className="text-xs text-muted-foreground mb-4">Ranked by total points</p>
 
         {loading ? (
           <div className="flex items-center justify-center h-32">
@@ -117,7 +139,7 @@ const AdminStats = () => {
                       </div>
                       <div>
                         <p className="text-sm font-bold text-foreground">{stat.display_name}</p>
-                        <p className="text-xs text-muted-foreground">Score: {stat.score}</p>
+                        <p className="text-xs text-muted-foreground">Points: {stat.totalPoints}</p>
                       </div>
                     </div>
                     {isExpanded ? (
@@ -130,28 +152,36 @@ const AdminStats = () => {
                     <div className="px-3 pb-3 border-t border-border pt-2">
                       <div className="grid grid-cols-2 gap-2 text-xs">
                         <div className="bg-muted rounded-lg p-2">
-                          <span className="text-muted-foreground">Namaz</span>
-                          <p className="font-bold text-foreground">{stat.totalNamaz}</p>
+                          <span className="text-muted-foreground">Namaz (Awal Waqt)</span>
+                          <p className="font-bold text-foreground">{stat.earlyNamazPoints} pts</p>
+                        </div>
+                        <div className="bg-muted rounded-lg p-2">
+                          <span className="text-muted-foreground">Namaz (Middle)</span>
+                          <p className="font-bold text-foreground">{stat.middleNamazPoints} pts</p>
+                        </div>
+                        <div className="bg-muted rounded-lg p-2">
+                          <span className="text-muted-foreground">Namaz (Late)</span>
+                          <p className="font-bold text-foreground">{stat.lateNamazPoints} pts</p>
                         </div>
                         <div className="bg-muted rounded-lg p-2">
                           <span className="text-muted-foreground">Dua</span>
-                          <p className="font-bold text-foreground">{stat.totalDua}</p>
+                          <p className="font-bold text-foreground">{stat.duaPoints} pts</p>
                         </div>
                         <div className="bg-muted rounded-lg p-2">
                           <span className="text-muted-foreground">Quran</span>
-                          <p className="font-bold text-foreground">{stat.totalQuran}</p>
+                          <p className="font-bold text-foreground">{stat.quranPoints} pts</p>
                         </div>
                         <div className="bg-muted rounded-lg p-2">
                           <span className="text-muted-foreground">Extra Dhikr</span>
-                          <p className="font-bold text-foreground">{stat.totalExtraZiker}</p>
+                          <p className="font-bold text-foreground">{stat.dhikrPoints} pts</p>
                         </div>
                         <div className="bg-muted rounded-lg p-2">
                           <span className="text-muted-foreground">Good Deeds</span>
-                          <p className="font-bold text-foreground">{stat.totalGoodDeed}</p>
+                          <p className="font-bold text-foreground">{stat.goodDeedPoints} pts</p>
                         </div>
-                        <div className="bg-muted rounded-lg p-2">
-                          <span className="text-muted-foreground">Total Sessions</span>
-                          <p className="font-bold text-foreground">{stat.totalAttendance}</p>
+                        <div className="bg-primary/10 rounded-lg p-2">
+                          <span className="text-primary font-semibold">Total</span>
+                          <p className="font-bold text-primary">{stat.totalPoints} pts</p>
                         </div>
                       </div>
                     </div>

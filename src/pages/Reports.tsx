@@ -92,7 +92,7 @@ const Reports = () => {
   ];
 
   const timeDistribution = [
-    { label: "Early (First 33%)", labelUrdu: "ابتدائی وقت", value: earlyPrayers, color: "bg-primary" },
+    { label: "Early (First 33%)", labelUrdu: "اول وقت", value: earlyPrayers, color: "bg-primary" },
     { label: "Middle (33-66%)", labelUrdu: "درمیانی وقت", value: middlePrayers, color: "bg-secondary" },
     { label: "Late (Last 33%)", labelUrdu: "آخری وقت", value: latePrayers, color: "bg-amber-500" },
   ];
