@@ -189,9 +189,13 @@ const AdminStats = () => {
                           <span className="text-muted-foreground">Good Deeds</span>
                           <p className="font-bold text-foreground">{stat.goodDeedPoints} pts</p>
                         </div>
-                        <div className="bg-primary/10 rounded-lg p-2">
+                        <div className="bg-muted rounded-lg p-2">
+                          <span className="text-muted-foreground">Qaza Marked</span>
+                          <p className="font-bold text-foreground">{stat.qazaPoints} pts</p>
+                        </div>
+                        <div className="bg-primary/10 rounded-lg p-2 col-span-2">
                           <span className="text-primary font-semibold">Total</span>
-                          <p className="font-bold text-primary">{stat.totalPoints} pts</p>
+                          <p className="font-bold text-primary text-lg">{stat.totalPoints} pts</p>
                         </div>
                       </div>
                     </div>
