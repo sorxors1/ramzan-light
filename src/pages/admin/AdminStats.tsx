@@ -15,6 +15,7 @@ interface UserStat {
   quranPoints: number;
   dhikrPoints: number;
   goodDeedPoints: number;
+  qazaPoints: number;
   totalPoints: number;
 }
 
