@@ -41,7 +41,6 @@ Deno.serve(async (req) => {
     const adminUserId = callerUser.id;
 
     const { data: roleData } = await serviceClient
-    const { data: roleData } = await serviceClient
       .from("user_roles")
       .select("role")
       .eq("user_id", adminUserId)
