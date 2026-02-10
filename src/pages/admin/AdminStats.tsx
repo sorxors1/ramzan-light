@@ -15,6 +15,7 @@ interface UserStat {
   quranPoints: number;
   dhikrPoints: number;
   goodDeedPoints: number;
+  qazaPoints: number;
   totalPoints: number;
 }
 
@@ -44,6 +45,7 @@ const AdminStats = () => {
             quranPoints: 0,
             dhikrPoints: 0,
             goodDeedPoints: 0,
+            qazaPoints: 0,
             totalPoints: 0,
           });
         });
@@ -77,6 +79,13 @@ const AdminStats = () => {
           if (a.good_deed && a.good_deed.trim()) stat.goodDeedPoints += 0.5;
         });
 
+        // Qaza records: 0.5 points each
+        const qazaRecords = data.qaza_records || [];
+        qazaRecords.forEach((q: any) => {
+          const stat = statsMap.get(q.user_id);
+          if (stat) stat.qazaPoints += 0.5;
+        });
+
         // Calculate total
         statsMap.forEach((stat) => {
           stat.totalPoints =
@@ -86,7 +95,8 @@ const AdminStats = () => {
             stat.duaPoints +
             stat.quranPoints +
             stat.dhikrPoints +
-            stat.goodDeedPoints;
+            stat.goodDeedPoints +
+            stat.qazaPoints;
         });
 
         const sorted = Array.from(statsMap.values()).sort((a, b) => b.totalPoints - a.totalPoints);
@@ -179,9 +189,13 @@ const AdminStats = () => {
                           <span className="text-muted-foreground">Good Deeds</span>
                           <p className="font-bold text-foreground">{stat.goodDeedPoints} pts</p>
                         </div>
-                        <div className="bg-primary/10 rounded-lg p-2">
+                        <div className="bg-muted rounded-lg p-2">
+                          <span className="text-muted-foreground">Qaza Marked</span>
+                          <p className="font-bold text-foreground">{stat.qazaPoints} pts</p>
+                        </div>
+                        <div className="bg-primary/10 rounded-lg p-2 col-span-2">
                           <span className="text-primary font-semibold">Total</span>
-                          <p className="font-bold text-primary">{stat.totalPoints} pts</p>
+                          <p className="font-bold text-primary text-lg">{stat.totalPoints} pts</p>
                         </div>
                       </div>
                     </div>

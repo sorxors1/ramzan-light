@@ -214,6 +214,11 @@ Deno.serve(async (req) => {
         .from("prayer_attendance")
         .select("*");
 
+      // Get all qaza records
+      const { data: qazaRecords } = await serviceClient
+        .from("qaza_records")
+        .select("*");
+
       // Get all profiles (non-admin)
       const { data: roles } = await serviceClient.from("user_roles").select("user_id, role");
       const adminIds = new Set((roles || []).filter((r) => r.role === "admin").map((r) => r.user_id));
@@ -222,7 +227,7 @@ Deno.serve(async (req) => {
       const userProfiles = (profiles || []).filter((p) => !adminIds.has(p.user_id));
 
       return new Response(
-        JSON.stringify({ attendance: attendance || [], profiles: userProfiles }),
+        JSON.stringify({ attendance: attendance || [], profiles: userProfiles, qaza_records: qazaRecords || [] }),
         { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
