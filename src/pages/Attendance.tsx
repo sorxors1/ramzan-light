@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import AppLayout from "@/components/layout/AppLayout";
 import FaisalabadClock from "@/components/FaisalabadClock";
-import { Sun, Sunset, Moon, ArrowLeft, Check, X, Lock, FlaskConical } from "lucide-react";
+import { Sun, Sunset, Moon, ArrowLeft, Check, X, Lock } from "lucide-react";
 import { useTodayTiming } from "@/hooks/usePrayerTimings";
 import { useTodayAttendance } from "@/hooks/usePrayerAttendance";
 import { useAuth } from "@/hooks/useAuth";
