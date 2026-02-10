@@ -45,8 +45,8 @@ const AdminStats = () => {
             quranPoints: 0,
             dhikrPoints: 0,
             goodDeedPoints: 0,
+            qazaPoints: 0,
             totalPoints: 0,
-          });
         });
 
         attendance.forEach((a: any) => {
