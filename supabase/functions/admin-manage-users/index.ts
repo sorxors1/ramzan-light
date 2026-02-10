@@ -229,6 +229,48 @@ Deno.serve(async (req) => {
       );
     }
 
+    if (action === "reset_all_data") {
+      // Delete all prayer attendance records
+      const { error: attErr } = await serviceClient
+        .from("prayer_attendance")
+        .delete()
+        .neq("id", "00000000-0000-0000-0000-000000000000");
+
+      if (attErr) {
+        return new Response(JSON.stringify({ error: "Failed to clear attendance: " + attErr.message }), {
+          status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      // Delete all qaza records
+      const { error: qazaErr } = await serviceClient
+        .from("qaza_records")
+        .delete()
+        .neq("id", "00000000-0000-0000-0000-000000000000");
+
+      if (qazaErr) {
+        return new Response(JSON.stringify({ error: "Failed to clear qaza records: " + qazaErr.message }), {
+          status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      // Reset first_login_at for all profiles so qaza tracking starts fresh
+      const { error: profileErr } = await serviceClient
+        .from("profiles")
+        .update({ first_login_at: null })
+        .neq("id", "00000000-0000-0000-0000-000000000000");
+
+      if (profileErr) {
+        return new Response(JSON.stringify({ error: "Failed to reset profiles: " + profileErr.message }), {
+          status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      return new Response(JSON.stringify({ success: true, message: "All data has been reset successfully" }), {
+        status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     return new Response(JSON.stringify({ error: "Unknown action" }), {
       status: 400,
       headers: { ...corsHeaders, "Content-Type": "application/json" },

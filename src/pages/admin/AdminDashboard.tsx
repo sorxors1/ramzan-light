@@ -1,7 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import AdminLayout from "@/components/layout/AdminLayout";
 import { adminApi } from "@/hooks/useAdmin";
 import { getFaisalabadDateString } from "@/lib/prayerUtils";
+import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { RotateCcw } from "lucide-react";
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState<{
@@ -12,37 +24,83 @@ const AdminDashboard = () => {
   }>({ totalUsers: 0, markedToday: 0, notMarkedToday: 0, daysRemaining: 0 });
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const data = await adminApi("get_stats");
-        const today = getFaisalabadDateString();
-        const profiles = data.profiles || [];
-        const attendance = data.attendance || [];
+  // Reset flow states
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [showCountdown, setShowCountdown] = useState(false);
+  const [countdown, setCountdown] = useState(5);
+  const [resetting, setResetting] = useState(false);
 
-        const todayAttendance = attendance.filter((a: any) => a.date === today);
-        const usersMarkedToday = new Set(todayAttendance.map((a: any) => a.user_id));
+  const fetchStats = useCallback(async () => {
+    try {
+      const data = await adminApi("get_stats");
+      const today = getFaisalabadDateString();
+      const profiles = data.profiles || [];
+      const attendance = data.attendance || [];
 
-        // Days remaining until March 19
-        const endDate = new Date("2026-03-19");
-        const now = new Date();
-        const diffMs = endDate.getTime() - now.getTime();
-        const daysRemaining = Math.max(0, Math.ceil(diffMs / (1000 * 60 * 60 * 24)));
+      const todayAttendance = attendance.filter((a: any) => a.date === today);
+      const usersMarkedToday = new Set(todayAttendance.map((a: any) => a.user_id));
 
-        setStats({
-          totalUsers: profiles.length,
-          markedToday: usersMarkedToday.size,
-          notMarkedToday: profiles.length - usersMarkedToday.size,
-          daysRemaining,
-        });
-      } catch (err) {
-        console.error("Failed to fetch stats:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchStats();
+      const endDate = new Date("2026-03-19");
+      const now = new Date();
+      const diffMs = endDate.getTime() - now.getTime();
+      const daysRemaining = Math.max(0, Math.ceil(diffMs / (1000 * 60 * 60 * 24)));
+
+      setStats({
+        totalUsers: profiles.length,
+        markedToday: usersMarkedToday.size,
+        notMarkedToday: profiles.length - usersMarkedToday.size,
+        daysRemaining,
+      });
+    } catch (err) {
+      console.error("Failed to fetch stats:", err);
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchStats();
+  }, [fetchStats]);
+
+  // Countdown timer effect
+  useEffect(() => {
+    if (!showCountdown) return;
+    if (countdown <= 0) {
+      // Time's up — perform reset
+      performReset();
+      return;
+    }
+    const timer = setTimeout(() => setCountdown((c) => c - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [showCountdown, countdown]);
+
+  const handleResetClick = () => setShowConfirm(true);
+
+  const handleFirstConfirm = () => {
+    setShowConfirm(false);
+    setCountdown(5);
+    setShowCountdown(true);
+  };
+
+  const handleCancelCountdown = () => {
+    setShowCountdown(false);
+    setCountdown(5);
+    toast.info("Reset cancelled");
+  };
+
+  const performReset = async () => {
+    setShowCountdown(false);
+    setResetting(true);
+    try {
+      await adminApi("reset_all_data");
+      toast.success("All data has been reset successfully!");
+      fetchStats();
+    } catch (err: any) {
+      toast.error("Reset failed: " + (err.message || "Unknown error"));
+    } finally {
+      setResetting(false);
+    }
+  };
 
   const statCards = [
     { label: "Total Students", value: stats.totalUsers, color: "#3B82F6", icon: "👥" },
@@ -96,7 +154,61 @@ const AdminDashboard = () => {
             </div>
           </div>
         )}
+
+        {/* Reset Button */}
+        <div className="mt-6">
+          <Button
+            variant="destructive"
+            className="w-full gap-2"
+            onClick={handleResetClick}
+            disabled={resetting || loading}
+          >
+            <RotateCcw className="h-4 w-4" />
+            {resetting ? "Resetting..." : "Reset All Data"}
+          </Button>
+          <p className="text-xs text-muted-foreground text-center mt-2">
+            Clears all attendance, qaza records & resets first-login timestamps. Users & credentials are kept.
+          </p>
+        </div>
       </div>
+
+      {/* First Confirmation Dialog */}
+      <AlertDialog open={showConfirm} onOpenChange={setShowConfirm}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>⚠️ Reset All Data?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will permanently delete all prayer attendance, qaza records, and reset every user's first-login timestamp.
+              Users and their credentials will NOT be affected. Are you sure?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <Button variant="destructive" onClick={handleFirstConfirm}>
+              Yes, Reset Everything
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Second Confirmation: 5-second countdown */}
+      <AlertDialog open={showCountdown} onOpenChange={() => {}}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>🔴 Final Warning</AlertDialogTitle>
+            <AlertDialogDescription className="text-center space-y-3">
+              <span className="block">Data will be reset in</span>
+              <span className="block text-4xl font-bold text-destructive">{countdown}</span>
+              <span className="block">seconds. Press Cancel to abort.</span>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="justify-center">
+            <Button variant="outline" size="lg" className="w-full" onClick={handleCancelCountdown}>
+              Cancel Reset
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </AdminLayout>
   );
 };
