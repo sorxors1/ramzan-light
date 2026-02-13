@@ -34,8 +34,8 @@ const About = () => {
             </p>
 
             <ul className="list-disc list-inside pl-2 space-y-1">
-              <li>Girls (6–10 years) and</li>
-              <li>Boys (9–13 years)</li>
+              <li>Girls (6–12 years) and</li>
+              <li>Boys (9–14 years)</li>
             </ul>
 
             <p>

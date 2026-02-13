@@ -7,7 +7,7 @@ import BottomNav from "@/components/layout/BottomNav";
 import namazAttendanceIcon from "@/assets/namaz-attendance-icon.svg";
 import kazaNamazIcon from "@/assets/kaza-namaz-icon.svg";
 import reportsIcon from "@/assets/reports-icon.svg";
-import aboutUsIcon from "@/assets/about-us-icon.svg";
+import duaIcon from "@/assets/dua-icon.svg";
 import contactUsIcon from "@/assets/contact-us-icon.svg";
 import settingsIcon from "@/assets/settings-icon.svg";
 import { getFaisalabadTime, getSessionWindows, sessionNames } from "@/lib/prayerUtils";
@@ -210,8 +210,8 @@ const Home = () => {
                   </div>
                 </Link>
 
-                {/* About Us */}
-                <Link to="/about" className="group block">
+                {/* Dua */}
+                <Link to="/dua" className="group block">
                   <div 
                     className="rounded-xl p-4 shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] h-28 flex flex-col items-center justify-center"
                     style={{
@@ -219,9 +219,9 @@ const Home = () => {
                     }}
                   >
                     <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center mb-2">
-                      <img src={aboutUsIcon} alt="About Us" className="w-10 h-10" />
+                      <img src={duaIcon} alt="Dua" className="w-10 h-10" />
                     </div>
-                    <h3 className="text-xs font-semibold text-white text-center">About Us</h3>
+                    <h3 className="text-xs font-semibold text-white text-center">Dua</h3>
                   </div>
                 </Link>
 
