@@ -12,6 +12,54 @@ Deno.serve(async (req) => {
   }
 
   try {
+    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+
+    const serviceClient = createClient(supabaseUrl, supabaseServiceKey, {
+      auth: { autoRefreshToken: false, persistSession: false },
+    });
+
+    const { action, ...payload } = await req.json();
+
+    // lookup_username does NOT require auth (used at login screen)
+    if (action === "lookup_username") {
+      const { username } = payload;
+      if (!username) {
+        return new Response(JSON.stringify({ error: "Username is required" }), {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      const { data: profile } = await serviceClient
+        .from("profiles")
+        .select("user_id")
+        .eq("username", username.trim().toLowerCase())
+        .maybeSingle();
+
+      if (!profile) {
+        return new Response(JSON.stringify({ error: "User not found" }), {
+          status: 404,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      // Get email from auth
+      const { data: authUser } = await serviceClient.auth.admin.getUserById(profile.user_id);
+      if (!authUser?.user?.email) {
+        return new Response(JSON.stringify({ error: "User not found" }), {
+          status: 404,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      return new Response(JSON.stringify({ email: authUser.user.email }), {
+        status: 200,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // All other actions require admin auth
     const authHeader = req.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
@@ -19,15 +67,6 @@ Deno.serve(async (req) => {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
-
-    // Verify caller is admin
-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
-    const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-
-    const serviceClient = createClient(supabaseUrl, supabaseServiceKey, {
-      auth: { autoRefreshToken: false, persistSession: false },
-    });
 
     const token = authHeader.replace("Bearer ", "");
     const { data: { user: callerUser }, error: userError } = await serviceClient.auth.getUser(token);
@@ -54,33 +93,47 @@ Deno.serve(async (req) => {
       });
     }
 
-    const { action, ...payload } = await req.json();
-
     if (action === "create_user") {
-      const { email, password, display_name, father_name, cnic, address } = payload;
+      const { username, email, password, display_name, father_name, cnic, address } = payload;
 
-      if (!email || !password || !display_name || !father_name) {
+      if (!username || !password || !display_name || !father_name) {
         return new Response(
-          JSON.stringify({ error: "Email, password, display name, and father name are required" }),
+          JSON.stringify({ error: "Username, password, display name, and father name are required" }),
           { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
       }
 
-      // Try to create user; if already exists, update their password instead
+      const cleanUsername = username.trim().toLowerCase();
+
+      // Check if username already exists
+      const { data: existingProfile } = await serviceClient
+        .from("profiles")
+        .select("id")
+        .eq("username", cleanUsername)
+        .maybeSingle();
+
+      if (existingProfile) {
+        return new Response(JSON.stringify({ error: "Username already taken" }), {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      // Use provided email or generate one from username
+      const authEmail = email?.trim() || `${cleanUsername}@kyc.prayer`;
+
       let userId: string;
 
       const { data: newUser, error: createError } = await serviceClient.auth.admin.createUser({
-        email,
+        email: authEmail,
         password,
         email_confirm: true,
       });
 
       if (createError) {
-        // Check if user already exists
         if (createError.message.includes("already been registered")) {
-          // Find existing user and update password
           const { data: authUsers } = await serviceClient.auth.admin.listUsers({ perPage: 1000 });
-          const existingUser = authUsers?.users?.find((u) => u.email === email);
+          const existingUser = authUsers?.users?.find((u) => u.email === authEmail);
           if (!existingUser) {
             return new Response(JSON.stringify({ error: "User exists but could not be found" }), {
               status: 400,
@@ -88,7 +141,6 @@ Deno.serve(async (req) => {
             });
           }
           userId = existingUser.id;
-          // Update password
           await serviceClient.auth.admin.updateUserById(userId, { password });
         } else {
           return new Response(JSON.stringify({ error: createError.message }), {
@@ -100,21 +152,26 @@ Deno.serve(async (req) => {
         userId = newUser.user.id;
       }
 
-      // Upsert profile with additional info
       await serviceClient
         .from("profiles")
         .upsert(
-          { user_id: userId, display_name, father_name, cnic: cnic || null, address: address || null },
+          {
+            user_id: userId,
+            username: cleanUsername,
+            display_name,
+            father_name,
+            cnic: cnic || null,
+            address: address || null,
+          },
           { onConflict: "user_id" }
         );
 
-      // Upsert user role
       await serviceClient
         .from("user_roles")
         .upsert({ user_id: userId, role: "user" }, { onConflict: "user_id,role" });
 
       return new Response(
-        JSON.stringify({ success: true, user_id: userId, email, password }),
+        JSON.stringify({ success: true, user_id: userId, username: cleanUsername, password }),
         { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
@@ -163,7 +220,6 @@ Deno.serve(async (req) => {
     }
 
     if (action === "list_users") {
-      // Get all profiles with user role
       const { data: profiles, error: profilesError } = await serviceClient
         .from("profiles")
         .select("*")
@@ -176,17 +232,14 @@ Deno.serve(async (req) => {
         });
       }
 
-      // Get roles to filter out admins
       const { data: roles } = await serviceClient.from("user_roles").select("user_id, role");
       const adminIds = new Set((roles || []).filter((r) => r.role === "admin").map((r) => r.user_id));
 
-      // Get all attendance data
       const { data: attendance } = await serviceClient
         .from("prayer_attendance")
         .select("*")
         .order("date", { ascending: false });
 
-      // Get user emails from auth
       const { data: authUsers } = await serviceClient.auth.admin.listUsers({ perPage: 1000 });
 
       const emailMap = new Map<string, string>();
@@ -209,17 +262,14 @@ Deno.serve(async (req) => {
     }
 
     if (action === "get_stats") {
-      // Get all attendance
       const { data: attendance } = await serviceClient
         .from("prayer_attendance")
         .select("*");
 
-      // Get all qaza records
       const { data: qazaRecords } = await serviceClient
         .from("qaza_records")
         .select("*");
 
-      // Get all profiles (non-admin)
       const { data: roles } = await serviceClient.from("user_roles").select("user_id, role");
       const adminIds = new Set((roles || []).filter((r) => r.role === "admin").map((r) => r.user_id));
 
@@ -233,7 +283,6 @@ Deno.serve(async (req) => {
     }
 
     if (action === "reset_all_data") {
-      // Delete all prayer attendance records
       const { error: attErr } = await serviceClient
         .from("prayer_attendance")
         .delete()
@@ -245,7 +294,6 @@ Deno.serve(async (req) => {
         });
       }
 
-      // Delete all qaza records
       const { error: qazaErr } = await serviceClient
         .from("qaza_records")
         .delete()
@@ -257,7 +305,6 @@ Deno.serve(async (req) => {
         });
       }
 
-      // Reset first_login_at for all profiles so qaza tracking starts fresh
       const { error: profileErr } = await serviceClient
         .from("profiles")
         .update({ first_login_at: null })

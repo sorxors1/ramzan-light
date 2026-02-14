@@ -10,24 +10,35 @@ import kyfLogo from "@/assets/kyf-logo.png";
 const SignIn = () => {
   const navigate = useNavigate();
   const { signIn } = useAuth();
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !password) {
+    if (!username || !password) {
       toast.error("Please fill in all fields");
       return;
     }
 
     setLoading(true);
     try {
-      const { data, error } = await signIn(email, password);
+      // Look up email from username via edge function
+      const { data: lookupData, error: lookupError } = await supabase.functions.invoke(
+        "admin-manage-users",
+        { body: { action: "lookup_username", username: username.trim().toLowerCase() } }
+      );
+
+      if (lookupError || !lookupData?.email) {
+        toast.error("Invalid username or password");
+        setLoading(false);
+        return;
+      }
+
+      const { data, error } = await signIn(lookupData.email, password);
       if (error) {
-        toast.error(error.message);
+        toast.error("Invalid username or password");
       } else {
-        // Set first_login_at if not already set
         if (data?.user) {
           await supabase
             .from("profiles")
@@ -64,13 +75,13 @@ const SignIn = () => {
         <form onSubmit={handleSignIn} className="space-y-4">
           <div className="space-y-2">
             <label className="text-sm font-medium text-foreground">
-              Email
+              Username
             </label>
             <Input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Enter your username"
               className="h-12 rounded-xl bg-card border-border"
             />
           </div>

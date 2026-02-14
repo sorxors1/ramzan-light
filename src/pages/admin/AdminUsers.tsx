@@ -19,6 +19,7 @@ import {
 interface UserProfile {
   id: string;
   user_id: string;
+  username: string | null;
   display_name: string | null;
   father_name: string | null;
   cnic: string | null;
@@ -32,9 +33,10 @@ const AdminUsers = () => {
   const [showAddForm, setShowAddForm] = useState(false);
   const [editUser, setEditUser] = useState<UserProfile | null>(null);
   const [deleteUserId, setDeleteUserId] = useState<string | null>(null);
-  const [createdCredentials, setCreatedCredentials] = useState<{ email: string; password: string } | null>(null);
+  const [createdCredentials, setCreatedCredentials] = useState<{ username: string; password: string } | null>(null);
 
   // Form state
+  const [formUsername, setFormUsername] = useState("");
   const [formEmail, setFormEmail] = useState("");
   const [formPassword, setFormPassword] = useState("");
   const [formDisplayName, setFormDisplayName] = useState("");
@@ -57,6 +59,7 @@ const AdminUsers = () => {
   useEffect(() => { fetchUsers(); }, []);
 
   const resetForm = () => {
+    setFormUsername("");
     setFormEmail("");
     setFormPassword("");
     setFormDisplayName("");
@@ -66,14 +69,15 @@ const AdminUsers = () => {
   };
 
   const handleCreate = async () => {
-    if (!formEmail || !formPassword || !formDisplayName || !formFatherName) {
+    if (!formUsername || !formPassword || !formDisplayName || !formFatherName) {
       toast.error("Please fill all required fields");
       return;
     }
     setSaving(true);
     try {
-      const result = await adminApi("create_user", {
-        email: formEmail,
+      await adminApi("create_user", {
+        username: formUsername,
+        email: formEmail || undefined,
         password: formPassword,
         display_name: formDisplayName,
         father_name: formFatherName,
@@ -81,7 +85,7 @@ const AdminUsers = () => {
         address: formAddress,
       });
       toast.success("User created successfully!");
-      setCreatedCredentials({ email: formEmail, password: formPassword });
+      setCreatedCredentials({ username: formUsername, password: formPassword });
       setShowAddForm(false);
       resetForm();
       fetchUsers();
@@ -128,7 +132,7 @@ const AdminUsers = () => {
 
   const copyCredentials = () => {
     if (!createdCredentials) return;
-    const text = `Email: ${createdCredentials.email}\nPassword: ${createdCredentials.password}`;
+    const text = `Username: ${createdCredentials.username}\nPassword: ${createdCredentials.password}`;
     navigator.clipboard.writeText(text);
     toast.success("Credentials copied to clipboard!");
   };
@@ -167,7 +171,7 @@ const AdminUsers = () => {
                 <X className="w-4 h-4 text-green-600" />
               </button>
             </div>
-            <p className="text-xs text-green-700 mb-1">Email: {createdCredentials.email}</p>
+            <p className="text-xs text-green-700 mb-1">Username: {createdCredentials.username}</p>
             <p className="text-xs text-green-700 mb-2">Password: {createdCredentials.password}</p>
             <Button size="sm" variant="outline" onClick={copyCredentials} className="border-green-300 text-green-700">
               <Copy className="w-3 h-3 mr-1" /> Copy Credentials
@@ -190,8 +194,18 @@ const AdminUsers = () => {
               {!editUser && (
                 <>
                   <div>
-                    <label className="text-xs font-medium text-foreground">Email *</label>
+                    <label className="text-xs font-medium text-foreground">Username *</label>
                     <Input
+                      value={formUsername}
+                      onChange={(e) => setFormUsername(e.target.value)}
+                      placeholder="Enter username"
+                      className="h-10 rounded-lg mt-1"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs font-medium text-foreground">Email (Optional)</label>
+                    <Input
+                      type="email"
                       value={formEmail}
                       onChange={(e) => setFormEmail(e.target.value)}
                       placeholder="user@example.com"
@@ -272,7 +286,7 @@ const AdminUsers = () => {
                 <div className="flex items-center justify-between">
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-bold text-foreground truncate">{user.display_name || "No name"}</p>
-                    <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                    <p className="text-xs text-muted-foreground truncate">@{user.username || "no-username"}</p>
                     {user.father_name && (
                       <p className="text-xs text-muted-foreground">S/O: {user.father_name}</p>
                     )}
