@@ -42,7 +42,7 @@ const Login = () => {
         <img 
           src={kyfLogo} 
           alt="KYF Faisalabad" 
-          className="w-48 h-auto object-contain mb-12 drop-shadow-lg"
+          className="w-[230px] h-auto object-contain mb-12 drop-shadow-lg"
         />
         
         {/* Login Form */}
