@@ -5,11 +5,13 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import { useSavedAccounts } from "@/hooks/useSavedAccounts";
 import kyfLogo from "@/assets/kyf-logo.png";
 
 const SignIn = () => {
   const navigate = useNavigate();
   const { signIn } = useAuth();
+  const { saveAccount } = useSavedAccounts();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -39,12 +41,20 @@ const SignIn = () => {
       if (error) {
         toast.error("Invalid username or password");
       } else {
-        if (data?.user) {
+        if (data?.user && data?.session) {
           await supabase
             .from("profiles")
             .update({ first_login_at: new Date().toISOString() })
             .eq("user_id", data.user.id)
             .is("first_login_at", null);
+
+          // Save account for instant switching
+          saveAccount(
+            username.trim().toLowerCase(),
+            data.user.id,
+            data.session.access_token,
+            data.session.refresh_token
+          );
         }
         toast.success("Welcome back!");
         navigate("/home");

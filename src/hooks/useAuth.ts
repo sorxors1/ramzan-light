@@ -51,6 +51,14 @@ export const useAuth = () => {
     return { error };
   };
 
+  const switchToAccount = async (accessToken: string, refreshToken: string) => {
+    const { data, error } = await supabase.auth.setSession({
+      access_token: accessToken,
+      refresh_token: refreshToken,
+    });
+    return { data, error };
+  };
+
   return {
     user,
     session,
@@ -58,6 +66,7 @@ export const useAuth = () => {
     signIn,
     signUp,
     signOut,
+    switchToAccount,
     isAuthenticated: !!user,
   };
 };

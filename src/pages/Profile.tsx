@@ -1,13 +1,19 @@
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AppLayout from "@/components/layout/AppLayout";
 import { useAuth } from "@/hooks/useAuth";
+import { useSavedAccounts, SavedAccount } from "@/hooks/useSavedAccounts";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, LogOut, User, Mail, Calendar } from "lucide-react";
+import { ArrowLeft, LogOut, User, Mail, Calendar, X, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 
 const Profile = () => {
-  const { user, isAuthenticated, signOut } = useAuth();
+  const { user, isAuthenticated, signOut, switchToAccount } = useAuth();
+  const { getOtherAccounts, removeAccount, saveAccount } = useSavedAccounts();
   const navigate = useNavigate();
+  const [switchingTo, setSwitchingTo] = useState<string | null>(null);
+
+  const otherAccounts: SavedAccount[] = user ? getOtherAccounts(user.id) : [];
 
   const handleSignOut = async () => {
     const { error } = await signOut();
@@ -107,6 +113,68 @@ const Profile = () => {
             </div>
           </div>
         </div>
+
+        {/* Switch Account Section */}
+        {otherAccounts.length > 0 && (
+          <div className="mb-6">
+            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+              Switch Account
+            </h3>
+            <div className="space-y-2">
+              {otherAccounts.map((account) => (
+                <div
+                  key={account.userId}
+                  className="flex items-center justify-between bg-card rounded-xl p-4 prayer-card-shadow"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center">
+                      <User className="w-4 h-4 text-primary" />
+                    </div>
+                    <span className="font-medium text-foreground">{account.username}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      disabled={switchingTo === account.userId}
+                      onClick={async () => {
+                        setSwitchingTo(account.userId);
+                        const { error } = await switchToAccount(account.accessToken, account.refreshToken);
+                        if (error) {
+                          toast.error("Session expired. Please log in again.");
+                          removeAccount(account.userId);
+                        } else {
+                          toast.success(`Switched to ${account.username}`);
+                          navigate("/home");
+                        }
+                        setSwitchingTo(null);
+                      }}
+                    >
+                      {switchingTo === account.userId ? (
+                        <RefreshCw className="w-3 h-3 animate-spin" />
+                      ) : (
+                        "Switch"
+                      )}
+                    </Button>
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                      onClick={() => {
+                        removeAccount(account.userId);
+                        toast.success(`Removed ${account.username}`);
+                        // Force re-render
+                        navigate("/profile", { replace: true });
+                      }}
+                    >
+                      <X className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Quick Links */}
         <div className="space-y-3 mb-6">
