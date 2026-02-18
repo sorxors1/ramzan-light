@@ -72,6 +72,11 @@ const Contact = () => {
             </div>
           ))}
         </div>
+
+        {/* Branding */}
+        <p className="text-center text-xs text-muted-foreground/50 mt-6 pb-2">
+          Created with ❤️ by Team WhiteQ
+        </p>
       </div>
     </AppLayout>
   );
