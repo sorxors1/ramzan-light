@@ -50,7 +50,7 @@ const Header = () => {
               </nav>
               {/* Branding */}
               <p className="text-center text-xs text-muted-foreground/40 px-6 py-4">
-                Created with ❤️ by Team WhiteQ
+                Created with ❤️ by Team WhiteQ.org
               </p>
             </div>
           </SheetContent>
