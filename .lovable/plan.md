@@ -1,72 +1,47 @@
 
+# Update Ramadan 2026 Calendar Data on Homepage
 
-# Multi-Account Instant Switching
+## What's Changing
+Only the data inside `RAMADAN_2026_FAISALABAD` array in `src/pages/Home.tsx` will be replaced. The table design, layout, colors, and scrollbar stay exactly as-is.
 
-## Overview
-When a user logs in, their session (including auth tokens) will be saved to the device. From the Profile page, they can instantly switch to any other saved account without re-entering a password. Accounts stay saved until explicitly removed.
+## New Data (from your uploaded document — zero changes)
 
-## How It Works for You
-
-1. **User A logs in** -- their session is remembered on the device
-2. **User A signs out** -- session stays saved on device, but user is logged out
-3. **User B logs in** -- their session is also saved
-4. **User B goes to Profile** -- sees User A listed under "Switch Account"
-5. **User B taps "Switch" on User A** -- instantly switches to User A (no password needed)
-6. **Remove button** -- forgets that account from the device; next time they'll need username + password
-7. **Sign Out button** -- logs out of current account but keeps it saved for quick switching later
+| Day | Date | Sehri | Iftar |
+|-----|------|-------|-------|
+| 1 | 19 Feb | 05:18 | 06:10 |
+| 2 | 20 Feb | 05:17 | 06:11 |
+| 3 | 21 Feb | 05:16 | 06:12 |
+| 4 | 22 Feb | 05:15 | 06:13 |
+| 5 | 23 Feb | 05:14 | 06:14 |
+| 6 | 24 Feb | 05:13 | 06:14 |
+| 7 | 25 Feb | 05:12 | 06:15 |
+| 8 | 26 Feb | 05:11 | 06:16 |
+| 9 | 27 Feb | 05:10 | 06:17 |
+| 10 | 28 Feb | 05:09 | 06:17 |
+| 11 | 01 Mar | 05:08 | 06:18 |
+| 12 | 02 Mar | 05:07 | 06:19 |
+| 13 | 03 Mar | 05:06 | 06:20 |
+| 14 | 04 Mar | 05:04 | 06:20 |
+| 15 | 05 Mar | 05:03 | 06:21 |
+| 16 | 06 Mar | 05:02 | 06:22 |
+| 17 | 07 Mar | 05:01 | 06:23 |
+| 18 | 08 Mar | 05:00 | 06:23 |
+| 19 | 09 Mar | 04:59 | 06:24 |
+| 20 | 10 Mar | 04:57 | 06:25 |
+| 21 | 11 Mar | 04:56 | 06:25 |
+| 22 | 12 Mar | 04:55 | 06:26 |
+| 23 | 13 Mar | 04:54 | 06:27 |
+| 24 | 14 Mar | 04:52 | 06:27 |
+| 25 | 15 Mar | 04:51 | 06:28 |
+| 26 | 16 Mar | 04:50 | 06:29 |
+| 27 | 17 Mar | 04:48 | 06:30 |
+| 28 | 18 Mar | 04:47 | 06:30 |
+| 29 | 19 Mar | 04:46 | 06:31 |
+| 30 | 20 Mar | 04:44 | 06:32 |
 
 ## Technical Details
 
-### New File: `src/hooks/useSavedAccounts.ts`
-A hook that manages saved account sessions in localStorage (key: `kyc_saved_sessions`).
-
-Each saved account stores:
-- `userId` -- unique identifier
-- `username` -- display name for the switch list
-- `accessToken` -- for instant session restore
-- `refreshToken` -- for instant session restore
-
-Methods:
-- `saveAccount(username, userId, accessToken, refreshToken)` -- save/update an account
-- `removeAccount(userId)` -- permanently remove a saved account
-- `getSavedAccounts()` -- get all saved accounts
-- `getOtherAccounts(currentUserId)` -- get accounts excluding the current one
-
-### Modified: `src/pages/SignIn.tsx`
-After successful login:
-- Fetch the user's username from the `profiles` table
-- Save the account session (username, userId, tokens) to localStorage via `useSavedAccounts`
-
-### Modified: `src/hooks/useAuth.ts`
-- Add a `switchToAccount(accessToken, refreshToken)` method that calls `supabase.auth.setSession()` to instantly restore a saved session
-- Existing `signOut` remains unchanged
-
-### Modified: `src/pages/Profile.tsx`
-Add a "Switch Account" section between Quick Links and Sign Out:
-- Lists all other saved accounts on this device (showing username)
-- Each account has a **"Switch"** button that instantly switches via `setSession`
-- Each account has a small **"Remove"** (X) button to forget it from the device
-- The existing **"Sign Out"** button remains at the bottom
-
-### Flow Diagram
-
-```text
-Login Success
-    |
-    v
-Save session tokens + username to localStorage
-    |
-    v
-Profile Page
-    |
-    +-- [Switch Account Section]
-    |       |
-    |       +-- Account A  [Switch] [X Remove]
-    |       +-- Account B  [Switch] [X Remove]
-    |
-    +-- [Sign Out] -- logs out, keeps account saved
-```
-
-### Security Note
-Session tokens are stored in localStorage (same as the current single-session approach). Removing an account clears its tokens. The refresh token has a limited lifetime, so very old saved sessions will naturally expire and require a fresh login.
-
+- File to edit: `src/pages/Home.tsx`
+- Lines 17–48: Replace the entire `RAMADAN_2026_FAISALABAD` array with the 30 new entries above
+- No other file touched
+- No UI changes at all — same green gradient card, same scrollable table, same column headers (Day / Date / Sehri / Iftar)
