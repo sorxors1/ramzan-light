@@ -1,4 +1,4 @@
-import { Users, BarChart3, LayoutDashboard, LogOut } from "lucide-react";
+import { Users, BarChart3, LayoutDashboard, LogOut, FileText } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
@@ -18,6 +18,7 @@ const AdminBottomNav = () => {
     { icon: LayoutDashboard, label: "Dashboard", path: "/admin" },
     { icon: Users, label: "Users", path: "/admin/users" },
     { icon: BarChart3, label: "Stats", path: "/admin/stats" },
+    { icon: FileText, label: "Reports", path: "/admin/reports" },
   ];
 
   return (
