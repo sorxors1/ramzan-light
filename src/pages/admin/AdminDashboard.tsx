@@ -13,7 +13,8 @@ import {
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { RotateCcw } from "lucide-react";
+import { RotateCcw, Download } from "lucide-react";
+import { generateReportCSV } from "@/lib/generateReportCSV";
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState<{
@@ -29,6 +30,7 @@ const AdminDashboard = () => {
   const [showCountdown, setShowCountdown] = useState(false);
   const [countdown, setCountdown] = useState(5);
   const [resetting, setResetting] = useState(false);
+  const [downloading, setDownloading] = useState(false);
 
   const fetchStats = useCallback(async () => {
     try {
@@ -155,8 +157,41 @@ const AdminDashboard = () => {
           </div>
         )}
 
-        {/* Reset Button */}
+        {/* Download Report Button */}
         <div className="mt-6">
+          <Button
+            className="w-full gap-2 bg-green-600 hover:bg-green-700 text-white"
+            onClick={async () => {
+              setDownloading(true);
+              try {
+                const data = await adminApi("get_stats");
+                const csv = generateReportCSV(data.profiles || [], data.attendance || [], data.qaza_records || []);
+                const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = `KYF_Prayer_Report_${new Date().toISOString().slice(0, 10)}.csv`;
+                a.click();
+                URL.revokeObjectURL(url);
+                toast.success("Report downloaded!");
+              } catch (err: any) {
+                toast.error("Failed to download: " + (err.message || "Unknown error"));
+              } finally {
+                setDownloading(false);
+              }
+            }}
+            disabled={downloading || loading}
+          >
+            <Download className="h-4 w-4" />
+            {downloading ? "Generating..." : "Download Report"}
+          </Button>
+          <p className="text-xs text-muted-foreground text-center mt-2">
+            Downloads a CSV with all student points, prayer counts & detail entries
+          </p>
+        </div>
+
+        {/* Reset Button */}
+        <div className="mt-4">
           <Button
             variant="destructive"
             className="w-full gap-2"
