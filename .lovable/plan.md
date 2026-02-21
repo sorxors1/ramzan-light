@@ -1,47 +1,82 @@
 
-# Update Ramadan 2026 Calendar Data on Homepage
 
-## What's Changing
-Only the data inside `RAMADAN_2026_FAISALABAD` array in `src/pages/Home.tsx` will be replaced. The table design, layout, colors, and scrollbar stay exactly as-is.
+## Admin Stats: View Extra Dhikr and Good Deeds Detail
 
-## New Data (from your uploaded document — zero changes)
+### What This Does
+When an admin expands a student's stats and taps the "Extra Dhikr" or "Good Deeds" card, a popup (dialog) will open showing:
+1. A calendar highlighting the dates when that student submitted entries
+2. Clicking a highlighted date reveals the actual text the student wrote for that day (for each prayer session)
 
-| Day | Date | Sehri | Iftar |
-|-----|------|-------|-------|
-| 1 | 19 Feb | 05:18 | 06:10 |
-| 2 | 20 Feb | 05:17 | 06:11 |
-| 3 | 21 Feb | 05:16 | 06:12 |
-| 4 | 22 Feb | 05:15 | 06:13 |
-| 5 | 23 Feb | 05:14 | 06:14 |
-| 6 | 24 Feb | 05:13 | 06:14 |
-| 7 | 25 Feb | 05:12 | 06:15 |
-| 8 | 26 Feb | 05:11 | 06:16 |
-| 9 | 27 Feb | 05:10 | 06:17 |
-| 10 | 28 Feb | 05:09 | 06:17 |
-| 11 | 01 Mar | 05:08 | 06:18 |
-| 12 | 02 Mar | 05:07 | 06:19 |
-| 13 | 03 Mar | 05:06 | 06:20 |
-| 14 | 04 Mar | 05:04 | 06:20 |
-| 15 | 05 Mar | 05:03 | 06:21 |
-| 16 | 06 Mar | 05:02 | 06:22 |
-| 17 | 07 Mar | 05:01 | 06:23 |
-| 18 | 08 Mar | 05:00 | 06:23 |
-| 19 | 09 Mar | 04:59 | 06:24 |
-| 20 | 10 Mar | 04:57 | 06:25 |
-| 21 | 11 Mar | 04:56 | 06:25 |
-| 22 | 12 Mar | 04:55 | 06:26 |
-| 23 | 13 Mar | 04:54 | 06:27 |
-| 24 | 14 Mar | 04:52 | 06:27 |
-| 25 | 15 Mar | 04:51 | 06:28 |
-| 26 | 16 Mar | 04:50 | 06:29 |
-| 27 | 17 Mar | 04:48 | 06:30 |
-| 28 | 18 Mar | 04:47 | 06:30 |
-| 29 | 19 Mar | 04:46 | 06:31 |
-| 30 | 20 Mar | 04:44 | 06:32 |
+### No Data Loss / No Backend Changes
+- This is a **frontend-only** change to the Admin Stats page
+- The attendance data (including `extra_ziker` and `good_deed` text fields) is **already being fetched** by the `get_stats` API action
+- We just need to store the raw attendance records alongside the computed points and display them in a dialog
+- No database changes, no edge function changes, no schema changes
 
-## Technical Details
+### Deployment Note
+After approval and implementation, you will need to:
+1. Pull the latest code from GitHub
+2. Run `npm run build`
+3. Upload the `dist` folder to your cPanel/hPanel
+4. Everything else (data, users, logins) stays exactly the same
 
-- File to edit: `src/pages/Home.tsx`
-- Lines 17–48: Replace the entire `RAMADAN_2026_FAISALABAD` array with the 30 new entries above
-- No other file touched
-- No UI changes at all — same green gradient card, same scrollable table, same column headers (Day / Date / Sehri / Iftar)
+---
+
+### Technical Implementation
+
+#### 1. Update AdminStats State to Store Raw Attendance
+
+Currently, the component only computes point totals and discards the raw attendance text. We will also store each user's attendance records that contain `extra_ziker` or `good_deed` text, grouped by user ID.
+
+A new state variable will hold the raw attendance data:
+```typescript
+const [attendanceData, setAttendanceData] = useState<Record<string, any[]>>({});
+```
+
+During the existing `fetchStats` loop, we will populate this map with records that have non-empty `extra_ziker` or `good_deed` values.
+
+#### 2. Make Dhikr and Good Deeds Cards Clickable
+
+The two stat cards ("Extra Dhikr" and "Good Deeds") in each user's expanded section will become clickable buttons. Tapping one opens a Dialog showing that user's data for that category.
+
+New state to track which dialog is open:
+```typescript
+const [dialogInfo, setDialogInfo] = useState<{
+  userId: string;
+  userName: string;
+  type: "dhikr" | "goodDeed";
+} | null>(null);
+```
+
+#### 3. Create the Detail Dialog Component
+
+The dialog will contain:
+- A **Calendar** component (using the existing Shadcn Calendar) with highlighted dates
+- Dates that have entries will be visually marked
+- Clicking a date shows the text entries for that date below the calendar
+- Each entry shows the session type (Fajr/Zoharain/Maghribain) and the text content
+
+```text
++------------------------------------+
+|  Extra Dhikr - Student Name        |
+|  --------------------------------  |
+|  [  Calendar with highlighted    ] |
+|  [  dates showing entries        ] |
+|  --------------------------------  |
+|  Selected: Feb 25, 2026            |
+|  --------------------------------  |
+|  Fajr: "Read Surah Yasin..."       |
+|  Zoharain: "100x Durood..."        |
++------------------------------------+
+```
+
+#### 4. Files to Modify
+
+- **`src/pages/admin/AdminStats.tsx`** -- Main changes:
+  - Import Dialog and Calendar components
+  - Store raw attendance data alongside computed stats
+  - Make Dhikr/Good Deed cards clickable
+  - Add dialog with calendar view and date-based text display
+
+No other files need to change. No backend or database modifications required.
+
