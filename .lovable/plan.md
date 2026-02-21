@@ -1,20 +1,23 @@
 
 
-## Ramadan Ended Overlay for Students
+## Add Reports Tab to Admin Dashboard
 
 ### What This Does
-After **March 20, 2026 at midnight (12:00 AM)**, any student who opens the app will see a full-screen popup overlay (similar to the Disqualification overlay) with:
+Adds a new **Reports** tab to the admin bottom navigation that shows detailed analytical reports of student performance, organized into clear categories:
 
-- A beautiful message: "Ramadan Kareem 2026 has ended" (in English and Urdu)
-- A thank-you note for their good deeds
-- A **Log Out** button as the only action
-- Blurred background so the dashboard is slightly visible but not accessible
-- **Admins are exempt** -- they can continue using the system normally
+1. **Namaz Timing Report** -- Students ranked by early/middle/late Namaz counts
+2. **Dua Leaders** -- Students with most Duas marked
+3. **Quran Leaders** -- Students with most Quran readings
+4. **Extra Dhikr Leaders** -- Students with most extra dhikr entries
+5. **Good Deeds Leaders** -- Students with most good deeds
+6. **Qaza Report** -- Students with most Qaza prayers marked
+
+Each section shows a ranked list of students with counts and visual indicators.
 
 ### No Data Loss / No Backend Changes
-- Frontend-only change
-- No database or backend modifications
-- All existing data, stats, and points remain intact
+- This is a **frontend-only** read operation -- it uses the same `get_stats` API that the Stats page already uses
+- No new database tables, columns, or backend functions needed
+- All existing data remains untouched
 
 ### Deployment
 1. Pull latest from GitHub
@@ -25,22 +28,19 @@ After **March 20, 2026 at midnight (12:00 AM)**, any student who opens the app w
 
 ### Technical Details
 
-#### New File: `src/components/RamadanEndedOverlay.tsx`
-- Follows the exact same pattern as `DisqualificationOverlay.tsx`
-- Checks if the current date is past March 20, 2026 (midnight)
-- Only shows for authenticated non-admin users
-- Renders a fixed full-screen overlay with `backdrop-blur-sm` and `bg-black/60`
-- Displays a card with a moon/star icon, the farewell message in English and Urdu, and a Log Out button
+#### New File: `src/pages/admin/AdminReports.tsx`
+- Uses `adminApi("get_stats")` to fetch profiles, attendance, and qaza_records (same data source as AdminStats)
+- Aggregates data into category-specific leaderboards:
+  - Counts early namaz (time_percentage <= 33.33), middle (33.33-66.66), late (> 66.66) per student
+  - Counts dua_marked, quran_marked, extra_ziker, good_deed, qaza per student
+- Uses Tabs component (already available) to organize reports by category
+- Each tab shows a ranked list with student name, father name, and count
+- Wrapped in `AdminLayout` for consistent styling
 
-**Condition logic:**
-```text
-if (!isAuthenticated) -> hide
-if (adminLoading) -> hide
-if (isAdmin) -> hide
-if (current date <= March 20, 2026) -> hide
-Otherwise -> show the overlay
-```
+#### Modified File: `src/components/layout/AdminBottomNav.tsx`
+- Add a new nav item: `{ icon: FileText, label: "Reports", path: "/admin/reports" }`
+- Placed between "Stats" and "Logout"
 
 #### Modified File: `src/App.tsx`
-- Import and add `<RamadanEndedOverlay />` alongside the existing `<DisqualificationOverlay />`
+- Import `AdminReports` and add route: `<Route path="/admin/reports" element={<AdminReports />} />`
 
