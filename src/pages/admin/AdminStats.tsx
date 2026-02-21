@@ -3,6 +3,7 @@ import AdminLayout from "@/components/layout/AdminLayout";
 import { adminApi } from "@/hooks/useAdmin";
 import { toast } from "sonner";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import AttendanceDetailDialog from "@/components/admin/AttendanceDetailDialog";
 
 interface UserStat {
   user_id: string;
@@ -19,10 +20,18 @@ interface UserStat {
   totalPoints: number;
 }
 
+interface DialogInfo {
+  userId: string;
+  userName: string;
+  type: "dhikr" | "goodDeed";
+}
+
 const AdminStats = () => {
   const [userStats, setUserStats] = useState<UserStat[]>([]);
   const [loading, setLoading] = useState(true);
   const [expandedUser, setExpandedUser] = useState<string | null>(null);
+  const [attendanceData, setAttendanceData] = useState<Record<string, any[]>>({});
+  const [dialogInfo, setDialogInfo] = useState<DialogInfo | null>(null);
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -32,6 +41,7 @@ const AdminStats = () => {
         const attendance = data.attendance || [];
 
         const statsMap = new Map<string, UserStat>();
+        const attMap: Record<string, any[]> = {};
 
         profiles.forEach((p: any) => {
           statsMap.set(p.user_id, {
@@ -48,13 +58,21 @@ const AdminStats = () => {
             qazaPoints: 0,
             totalPoints: 0,
           });
+          attMap[p.user_id] = [];
         });
 
         attendance.forEach((a: any) => {
           const stat = statsMap.get(a.user_id);
           if (!stat) return;
 
-          // Namaz points based on time_percentage
+          // Store raw record for dialog
+          if (
+            (a.extra_ziker && a.extra_ziker.trim()) ||
+            (a.good_deed && a.good_deed.trim())
+          ) {
+            attMap[a.user_id]?.push(a);
+          }
+
           if (a.namaz_marked) {
             const tp = a.time_percentage ?? 50;
             if (tp <= 33.33) {
@@ -66,27 +84,18 @@ const AdminStats = () => {
             }
           }
 
-          // Dua: 1 point
           if (a.dua_marked) stat.duaPoints += 1;
-
-          // Quran: 1 point
           if (a.quran_marked) stat.quranPoints += 1;
-
-          // Dhikr: 0.5 points
           if (a.extra_ziker && a.extra_ziker.trim()) stat.dhikrPoints += 0.5;
-
-          // Good Deed: 0.5 points
           if (a.good_deed && a.good_deed.trim()) stat.goodDeedPoints += 0.5;
         });
 
-        // Qaza records: 0.5 points each
         const qazaRecords = data.qaza_records || [];
         qazaRecords.forEach((q: any) => {
           const stat = statsMap.get(q.user_id);
           if (stat) stat.qazaPoints += 0.5;
         });
 
-        // Calculate total
         statsMap.forEach((stat) => {
           stat.totalPoints =
             stat.earlyNamazPoints +
@@ -101,6 +110,7 @@ const AdminStats = () => {
 
         const sorted = Array.from(statsMap.values()).sort((a, b) => b.totalPoints - a.totalPoints);
         setUserStats(sorted);
+        setAttendanceData(attMap);
       } catch (err: any) {
         toast.error(err.message);
       } finally {
@@ -181,14 +191,34 @@ const AdminStats = () => {
                           <span className="text-muted-foreground">Quran</span>
                           <p className="font-bold text-foreground">{stat.quranPoints} pts</p>
                         </div>
-                        <div className="bg-muted rounded-lg p-2">
-                          <span className="text-muted-foreground">Extra Dhikr</span>
+                        {/* Clickable Dhikr card */}
+                        <button
+                          onClick={() =>
+                            setDialogInfo({
+                              userId: stat.user_id,
+                              userName: stat.display_name,
+                              type: "dhikr",
+                            })
+                          }
+                          className="bg-muted rounded-lg p-2 text-left hover:ring-2 hover:ring-primary/50 transition-all"
+                        >
+                          <span className="text-muted-foreground">Extra Dhikr 🔍</span>
                           <p className="font-bold text-foreground">{stat.dhikrPoints} pts</p>
-                        </div>
-                        <div className="bg-muted rounded-lg p-2">
-                          <span className="text-muted-foreground">Good Deeds</span>
+                        </button>
+                        {/* Clickable Good Deeds card */}
+                        <button
+                          onClick={() =>
+                            setDialogInfo({
+                              userId: stat.user_id,
+                              userName: stat.display_name,
+                              type: "goodDeed",
+                            })
+                          }
+                          className="bg-muted rounded-lg p-2 text-left hover:ring-2 hover:ring-primary/50 transition-all"
+                        >
+                          <span className="text-muted-foreground">Good Deeds 🔍</span>
                           <p className="font-bold text-foreground">{stat.goodDeedPoints} pts</p>
-                        </div>
+                        </button>
                         <div className="bg-muted rounded-lg p-2">
                           <span className="text-muted-foreground">Qaza Marked</span>
                           <p className="font-bold text-foreground">{stat.qazaPoints} pts</p>
@@ -206,6 +236,17 @@ const AdminStats = () => {
           </div>
         )}
       </div>
+
+      {/* Detail Dialog */}
+      {dialogInfo && (
+        <AttendanceDetailDialog
+          open={!!dialogInfo}
+          onOpenChange={(open) => !open && setDialogInfo(null)}
+          userName={dialogInfo.userName}
+          type={dialogInfo.type}
+          records={attendanceData[dialogInfo.userId] || []}
+        />
+      )}
     </AdminLayout>
   );
 };
