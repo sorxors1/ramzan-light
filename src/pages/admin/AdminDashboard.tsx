@@ -42,7 +42,7 @@ const AdminDashboard = () => {
       const todayAttendance = attendance.filter((a: any) => a.date === today);
       const usersMarkedToday = new Set(todayAttendance.map((a: any) => a.user_id));
 
-      const endDate = new Date("2026-03-19");
+      const endDate = new Date("2026-03-20");
       const now = new Date();
       const diffMs = endDate.getTime() - now.getTime();
       const daysRemaining = Math.max(0, Math.ceil(diffMs / (1000 * 60 * 60 * 24)));
