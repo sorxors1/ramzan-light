@@ -17,7 +17,7 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
-import DisqualificationOverlay from "./components/DisqualificationOverlay";
+
 import RamadanEndedOverlay from "./components/RamadanEndedOverlay";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -33,7 +33,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <DisqualificationOverlay />
+        
         <RamadanEndedOverlay />
         <Routes>
           <Route path="/" element={<Splash />} />
