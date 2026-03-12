@@ -276,7 +276,7 @@ Deno.serve(async (req) => {
       const { data: roles } = await serviceClient.from("user_roles").select("user_id, role");
       const adminIds = new Set((roles || []).filter((r) => r.role === "admin").map((r) => r.user_id));
 
-      const { data: profiles } = await serviceClient.from("profiles").select("*");
+      const { data: profiles } = await serviceClient.from("profiles").select("*").limit(10000);
       const userProfiles = (profiles || []).filter((p) => !adminIds.has(p.user_id));
 
       return new Response(
