@@ -1,5 +1,24 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
+const PAGE_SIZE = 1000;
+
+async function fetchAll(client: any, table: string, orderCol = "created_at") {
+  const all: any[] = [];
+  let from = 0;
+  while (true) {
+    const { data, error } = await client
+      .from(table)
+      .select("*")
+      .order(orderCol, { ascending: true })
+      .range(from, from + PAGE_SIZE - 1);
+    if (error) throw error;
+    if (data) all.push(...data);
+    if (!data || data.length < PAGE_SIZE) break;
+    from += PAGE_SIZE;
+  }
+  return all;
+}
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
