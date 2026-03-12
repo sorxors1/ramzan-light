@@ -21,6 +21,23 @@ Deno.serve(async (req) => {
       auth: { autoRefreshToken: false, persistSession: false },
     });
 
+    async function fetchAll(table: string, orderCol = "created_at") {
+      const all: any[] = [];
+      let from = 0;
+      while (true) {
+        const { data, error } = await serviceClient
+          .from(table)
+          .select("*")
+          .order(orderCol, { ascending: true })
+          .range(from, from + PAGE_SIZE - 1);
+        if (error) throw error;
+        if (data) all.push(...data);
+        if (!data || data.length < PAGE_SIZE) break;
+        from += PAGE_SIZE;
+      }
+      return all;
+    }
+
     const { action, ...payload } = await req.json();
 
     // lookup_username does NOT require auth (used at login screen)
