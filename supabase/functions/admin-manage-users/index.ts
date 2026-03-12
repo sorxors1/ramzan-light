@@ -270,7 +270,8 @@ Deno.serve(async (req) => {
 
       const { data: qazaRecords } = await serviceClient
         .from("qaza_records")
-        .select("*");
+        .select("*")
+        .limit(10000);
 
       const { data: roles } = await serviceClient.from("user_roles").select("user_id, role");
       const adminIds = new Set((roles || []).filter((r) => r.role === "admin").map((r) => r.user_id));
