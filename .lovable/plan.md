@@ -1,35 +1,32 @@
 
 
-## Remove Disqualification System
+## Fix: Admin Dashboard Not Showing Today's Attendance
 
-### What This Does
-Completely removes the disqualification feature so that:
-- **No student will ever see the "Disqualified" popup again** -- including those currently disqualified
-- The app continues working normally for everyone until the Ramadan end date (March 20)
-- Admins are unaffected
+### Root Cause
+The database now contains **3,502 attendance records**. The Supabase client has a **default limit of 1,000 rows** per query. When the `get_stats` action runs `select("*")` on `prayer_attendance`, it only returns the oldest 1,000 records -- today's records are beyond that limit and get silently dropped.
 
-### No Data Loss / No Backend Changes
-- This is a **frontend-only removal** -- just deleting/editing React components
-- No database tables, columns, or backend functions are touched
-- All attendance records, points, stats, and user accounts remain exactly as they are
-- The underlying attendance data stays in the database (it's just no longer checked for disqualification)
+This is why it worked 10 days ago (fewer total records) but stopped now.
 
-### Deployment
-1. Pull latest from GitHub
-2. Run `npm run build`
-3. Upload the `dist` folder to your hPanel
-4. Done -- all previously disqualified users will immediately regain access
-
----
+### The Fix
+In the edge function (`supabase/functions/admin-manage-users/index.ts`), add `.limit(10000)` or use pagination/range to fetch all records. Same fix needed for `list_users` action which also fetches all attendance.
 
 ### Technical Details
 
-#### Deleted Files
-1. **`src/components/DisqualificationOverlay.tsx`** -- the popup component
-2. **`src/hooks/useDisqualification.ts`** -- the hook that checks missed prayers
+#### Modified File: `supabase/functions/admin-manage-users/index.ts`
 
-#### Modified File: `src/App.tsx`
-- Remove the import of `DisqualificationOverlay`
-- Remove `<DisqualificationOverlay />` from the JSX
+**In the `get_stats` action (~line 265-267):**
+- Change `serviceClient.from("prayer_attendance").select("*")` to include `.limit(10000)` 
+- Same for `qaza_records` query
+- Same for `profiles` query
 
-That's it -- 2 files deleted, 2 lines removed from App.tsx. Everything else stays the same.
+**In the `list_users` action (~line 238-241):**
+- Add `.limit(10000)` to the attendance query
+
+This ensures all records are fetched regardless of how many accumulate over the remaining Ramadan days.
+
+### Impact
+- Backend-only change (edge function update)
+- The edge function will be deployed automatically
+- No data loss, no frontend changes needed
+- Your existing deployed build on hPanel will work immediately since it calls the same edge function
+
