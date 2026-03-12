@@ -238,7 +238,8 @@ Deno.serve(async (req) => {
       const { data: attendance } = await serviceClient
         .from("prayer_attendance")
         .select("*")
-        .order("date", { ascending: false });
+        .order("date", { ascending: false })
+        .limit(10000);
 
       const { data: authUsers } = await serviceClient.auth.admin.listUsers({ perPage: 1000 });
 
