@@ -1,5 +1,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
+const PAGE_SIZE = 1000;
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
@@ -18,6 +20,23 @@ Deno.serve(async (req) => {
     const serviceClient = createClient(supabaseUrl, supabaseServiceKey, {
       auth: { autoRefreshToken: false, persistSession: false },
     });
+
+    async function fetchAll(table: string, orderCol = "created_at") {
+      const all: any[] = [];
+      let from = 0;
+      while (true) {
+        const { data, error } = await serviceClient
+          .from(table)
+          .select("*")
+          .order(orderCol, { ascending: true })
+          .range(from, from + PAGE_SIZE - 1);
+        if (error) throw error;
+        if (data) all.push(...data);
+        if (!data || data.length < PAGE_SIZE) break;
+        from += PAGE_SIZE;
+      }
+      return all;
+    }
 
     const { action, ...payload } = await req.json();
 
@@ -235,11 +254,7 @@ Deno.serve(async (req) => {
       const { data: roles } = await serviceClient.from("user_roles").select("user_id, role");
       const adminIds = new Set((roles || []).filter((r) => r.role === "admin").map((r) => r.user_id));
 
-      const { data: attendance } = await serviceClient
-        .from("prayer_attendance")
-        .select("*")
-        .order("date", { ascending: false })
-        .limit(10000);
+      const attendance = await fetchAll("prayer_attendance");
 
       const { data: authUsers } = await serviceClient.auth.admin.listUsers({ perPage: 1000 });
 
@@ -263,20 +278,13 @@ Deno.serve(async (req) => {
     }
 
     if (action === "get_stats") {
-      const { data: attendance } = await serviceClient
-        .from("prayer_attendance")
-        .select("*")
-        .limit(10000);
-
-      const { data: qazaRecords } = await serviceClient
-        .from("qaza_records")
-        .select("*")
-        .limit(10000);
+      const attendance = await fetchAll("prayer_attendance");
+      const qazaRecords = await fetchAll("qaza_records");
 
       const { data: roles } = await serviceClient.from("user_roles").select("user_id, role");
       const adminIds = new Set((roles || []).filter((r) => r.role === "admin").map((r) => r.user_id));
 
-      const { data: profiles } = await serviceClient.from("profiles").select("*").limit(10000);
+      const profiles = await fetchAll("profiles");
       const userProfiles = (profiles || []).filter((p) => !adminIds.has(p.user_id));
 
       return new Response(
