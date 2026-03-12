@@ -238,7 +238,8 @@ Deno.serve(async (req) => {
       const { data: attendance } = await serviceClient
         .from("prayer_attendance")
         .select("*")
-        .order("date", { ascending: false });
+        .order("date", { ascending: false })
+        .limit(10000);
 
       const { data: authUsers } = await serviceClient.auth.admin.listUsers({ perPage: 1000 });
 
@@ -264,16 +265,18 @@ Deno.serve(async (req) => {
     if (action === "get_stats") {
       const { data: attendance } = await serviceClient
         .from("prayer_attendance")
-        .select("*");
+        .select("*")
+        .limit(10000);
 
       const { data: qazaRecords } = await serviceClient
         .from("qaza_records")
-        .select("*");
+        .select("*")
+        .limit(10000);
 
       const { data: roles } = await serviceClient.from("user_roles").select("user_id, role");
       const adminIds = new Set((roles || []).filter((r) => r.role === "admin").map((r) => r.user_id));
 
-      const { data: profiles } = await serviceClient.from("profiles").select("*");
+      const { data: profiles } = await serviceClient.from("profiles").select("*").limit(10000);
       const userProfiles = (profiles || []).filter((p) => !adminIds.has(p.user_id));
 
       return new Response(
