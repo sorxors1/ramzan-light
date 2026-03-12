@@ -254,7 +254,7 @@ Deno.serve(async (req) => {
       const { data: roles } = await serviceClient.from("user_roles").select("user_id, role");
       const adminIds = new Set((roles || []).filter((r) => r.role === "admin").map((r) => r.user_id));
 
-      const attendance = await fetchAll(serviceClient, "prayer_attendance");
+      const attendance = await fetchAll("prayer_attendance");
 
       const { data: authUsers } = await serviceClient.auth.admin.listUsers({ perPage: 1000 });
 
