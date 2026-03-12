@@ -278,20 +278,14 @@ Deno.serve(async (req) => {
     }
 
     if (action === "get_stats") {
-      const { data: attendance } = await serviceClient
-        .from("prayer_attendance")
-        .select("*")
-        .limit(10000);
-
-      const { data: qazaRecords } = await serviceClient
-        .from("qaza_records")
-        .select("*")
-        .limit(10000);
+      const attendance = await fetchAll(serviceClient, "prayer_attendance");
+      const qazaRecords = await fetchAll(serviceClient, "qaza_records");
 
       const { data: roles } = await serviceClient.from("user_roles").select("user_id, role");
       const adminIds = new Set((roles || []).filter((r) => r.role === "admin").map((r) => r.user_id));
 
-      const { data: profiles } = await serviceClient.from("profiles").select("*").limit(10000);
+      const profiles = await fetchAll(serviceClient, "profiles");
+      const userProfiles = (profiles || []).filter((p) => !adminIds.has(p.user_id));
       const userProfiles = (profiles || []).filter((p) => !adminIds.has(p.user_id));
 
       return new Response(
