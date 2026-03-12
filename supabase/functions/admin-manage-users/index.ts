@@ -265,7 +265,8 @@ Deno.serve(async (req) => {
     if (action === "get_stats") {
       const { data: attendance } = await serviceClient
         .from("prayer_attendance")
-        .select("*");
+        .select("*")
+        .limit(10000);
 
       const { data: qazaRecords } = await serviceClient
         .from("qaza_records")
